@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using PoppyScyyeGameModes.Gamemodes;
 
 namespace PoppyScyyeGameModes.Monos
 {
@@ -9,7 +10,7 @@ namespace PoppyScyyeGameModes.Monos
     {
         public void Start()
         {
-            // SkillPointShop.SkillPoints.Add("SkillPoints", 10);
+            SkillPointShop.SkillPoints.Add("SkillPoints", 10);
         }
     }
 }
