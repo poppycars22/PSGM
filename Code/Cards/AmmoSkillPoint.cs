@@ -1,26 +1,20 @@
 ﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class BlockSkillPoint : SkillPointCard
+    internal class AmmoSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            block.additionalBlocks = 1;
-            //COSTS 5*********
+            gun.ammo = 5;
         }
 
         protected override CardInfoStat GetStat()
         {
             return new CardInfoStat()
             {
-                amount = "+1",
-                positive = true,
-                stat = "Block"
+                amount = "+5",
+                stat = "Ammo",
+                positive = true
             };
-        }
-
-        public override int GetCost()
-        {
-            return 5;
         }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using PoppyScyyeGameModes.Cards;
 using PoppyScyyeGameModes.Gamemodes;
 using UnboundLib;
+using UnboundLib.Cards;
 using UnboundLib.GameModes;
 
 namespace PoppyScyyeGameModes
@@ -42,6 +44,14 @@ namespace PoppyScyyeGameModes
         {
             GameModeManager.AddHandler<SkillPointGM>(SkillPointHandler.GameModeID, new SkillPointHandler());
             GameModeManager.AddHandler<SkillPointGM>(SkillPointTeamHandler.GameModeID, new SkillPointTeamHandler());
+
+            CustomCard.BuildCard<AmmoSkillPoint>();
+            CustomCard.BuildCard<BlockCooldownSkillPoint>();
+            CustomCard.BuildCard<DamageSkillPoint>();
+            CustomCard.BuildCard<HealthSkillPoint>();
+            CustomCard.BuildCard<BlockSkillPoint>();
+            CustomCard.BuildCard<RegenerationSkillPoint>();
+            CustomCard.BuildCard<BounceSkillPoint>();
         }
 
     }
