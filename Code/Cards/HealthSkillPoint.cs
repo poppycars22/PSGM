@@ -6,7 +6,7 @@ namespace PoppyScyyeGameModes.Cards
     {
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
-            throw new NotImplementedException();
+            data.health += 15;
         }
 
         protected override CardInfoStat GetStat()
