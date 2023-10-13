@@ -4,9 +4,9 @@ namespace PoppyScyyeGameModes.Cards
 {
     internal class HealthSkillPoint : SkillPointCard
     {
-        public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
+        public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            data.health += 15;
+            statModifiers.health = 1.15f;
         }
 
         protected override CardInfoStat GetStat()

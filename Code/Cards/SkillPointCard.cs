@@ -10,6 +10,11 @@ namespace PoppyScyyeGameModes.Cards
     {
         public abstract override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block);
 
+        public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
+        {
+        }
+        
+
         protected override GameObject GetCardArt()
         {
             return null;
