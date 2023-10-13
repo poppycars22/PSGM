@@ -37,7 +37,7 @@ namespace PSGM
         public const string Version = "0.0.1"; // What version are we on (major.minor.patch)?
         public const string ModInitials = "PSGM";
         public static PoppysAndScyyesGameModes Instance { get; private set; }
-        public static object CPGM_Assets { get; internal set; }
+       // public static object CPGM_Assets { get; internal set; }
 
        // public static AssetBundle Bundle = Jotunn.Utils.AssetUtils.LoadAssetBundleFromResources("cpcart", typeof(ChaosPoppycarsCards).Assembly);
 

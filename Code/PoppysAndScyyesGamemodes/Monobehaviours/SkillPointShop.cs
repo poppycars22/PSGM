@@ -19,11 +19,11 @@ namespace PSGM.Monos
     public class SkillPointShop
     {
         public static Shop SkillPoint_Shop;
-        public static string ShopID = "CPGM_SkillPoint_Shop";
+        public static string ShopID = "PSGM_SkillPoint_Shop";
         public static Dictionary<String, int> SkillPoints = new Dictionary<String, int>();
         public static CharacterStatModifiers characterStats;
 
-        internal static IEnumerator Wish()
+        internal static IEnumerator SkillUp()
         {
             SkillPoints = new Dictionary<string, int>();
 
@@ -31,7 +31,7 @@ namespace PSGM.Monos
                 ShopManager.instance.RemoveShop(SkillPoint_Shop);
             SkillPoint_Shop = ShopManager.instance.CreateShop(ShopID);
             SkillPoint_Shop.UpdateMoneyColumnName("Skill Points");
-            SkillPoint_Shop.UpdateTitle("Be Carful What You Wish For");
+            SkillPoint_Shop.UpdateTitle("something something grow powerful");
             //GameModeManager.AddOnceHook(GameModeHooks.HookPickStart, (gm) => SetUpShopStart());
            // ChaosPoppycarsGamemodes.Instance.StartCoroutine(SetUpShop());
             yield break;

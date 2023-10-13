@@ -9,10 +9,10 @@ namespace PSGM.Extensions
     public class CharacterStatModifiersAdditionalData
     {
 
-        public int damageSkillPoints;
+        //public int damageSkillPoints;
         public CharacterStatModifiersAdditionalData()
         {
-            damageSkillPoints = 0;
+           // damageSkillPoints = 0;
         }
     }
     public static class CharacterStatModifiersExtension
@@ -38,8 +38,7 @@ namespace PSGM.Extensions
     {
         private static void Prefix(CharacterStatModifiers __instance)
         {
-            //__instance.GetAdditionalData().RainbowLeafHealth = 0f;
-            __instance.GetAdditionalData().damageSkillPoints = 0;
+            //__instance.GetAdditionalData().damageSkillPoints = 0;
         }
     }
 }

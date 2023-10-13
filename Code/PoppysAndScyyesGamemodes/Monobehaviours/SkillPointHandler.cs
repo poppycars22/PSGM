@@ -29,20 +29,20 @@ namespace PSGM.Monos
 
 
         }
-        void PickEnd()
+       void PickEnd()
         {
 
         
         
         
         }
-        void OnPointStart()
+        /*void OnPointStart()
         {
             if (characterStats.GetAdditionalData().damageSkillPoints > 0)
             {
                 gun.damage *= (characterStats.GetAdditionalData().damageSkillPoints * 1.5f);
             }
-        }
+        }*/
         public Player player;
         public Gun gun;
         public CharacterStatModifiers characterStats;
