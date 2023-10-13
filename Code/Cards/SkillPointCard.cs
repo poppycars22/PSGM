@@ -16,6 +16,11 @@ namespace PoppyScyyeGameModes.Cards
             return null;
         }
 
+        public override string GetModName()
+        {
+            return "Skill Points";
+        }
+
         protected override string GetDescription()
         {
             return "";
