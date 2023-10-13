@@ -1,21 +1,68 @@
-﻿using System;
+﻿using PoppyScyyeGameModes.Monos;
+using RWF.GameModes;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using ItemShops.Extensions;
-using ItemShops.Utils;
-using TMPro;
 using UnboundLib;
-using UnityEngine;
-using UnboundLib.Networking;
-using CardChoiceSpawnUniqueCardPatch.CustomCategories;
-using UnboundLib.Utils;
-using ModdingUtils.Utils;
-using PSGM.Monos;
-using PSGM.Extensions;
 
-namespace PSGM.Monos
+namespace PoppyScyyeGameModes.Gamemodes
 {
+    public class SkillPointGM : RWFGameMode
+    {
+        public override IEnumerator DoStartGame()
+        {
+            foreach (Player player in PlayerManager.instance.players)
+            {
+                player.gameObject.GetOrAddComponent<SkillPointMono>();
+            }
+
+            yield break;
+        }
+    }
+
+    public class SkillPointHandler : RWFGameModeHandler<SkillPointGM>
+    {
+        internal const string GameModeName = "Skill Points";
+        internal const string GameModeID = "Skill_Points";
+
+        // Null is default values
+        public SkillPointHandler() : base(
+            name: GameModeName,
+            gameModeId: GameModeID,
+            allowTeams: false,
+            pointsToWinRound: 1,
+            roundsToWinGame: 3,
+            playersRequiredToStartGame: null,
+            maxPlayers: null,
+            maxTeams: null,
+            maxClients: null,
+            description: $"Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 5 kills or from the Skill point card.")
+        {
+
+        }
+    }
+
+    public class SkillPointTeamHandler : RWFGameModeHandler<SkillPointGM>
+    {
+        internal const string GameModeName = "Team Skill Points";
+        internal const string GameModeID = "Team_Skill_Points";
+
+        // Null is default values
+        public SkillPointTeamHandler() : base(
+            name: GameModeName,
+            gameModeId: GameModeID,
+            allowTeams: true,
+            pointsToWinRound: 1,
+            roundsToWinGame: 5,
+            playersRequiredToStartGame: null,
+            maxPlayers: null,
+            maxTeams: null,
+            maxClients: null,
+            description: $"Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 5 kills or from the Skill point card.")
+        {
+
+        }
+    }
+
+    /*
     public class SkillPointShop
     {
         public static Shop SkillPoint_Shop;
@@ -33,15 +80,15 @@ namespace PSGM.Monos
             SkillPoint_Shop.UpdateMoneyColumnName("Skill Points");
             SkillPoint_Shop.UpdateTitle("something something grow powerful");
             //GameModeManager.AddOnceHook(GameModeHooks.HookPickStart, (gm) => SetUpShopStart());
-           // ChaosPoppycarsGamemodes.Instance.StartCoroutine(SetUpShop());
+            // ChaosPoppycarsGamemodes.Instance.StartCoroutine(SetUpShop());
             yield break;
         }
 
-        /*  internal static IEnumerator SetUpShop()
+        internal static IEnumerator SetUpShop()
           {
               List<UnboundLib.Utils.Card> allCards = UnboundLib.Utils.CardManager.cards.Values.ToList();
               List<CardItem> items = new List<CardItem>();
-              SkillPoint_Shop.AddItem("Attack Skill");
+              SkillPoint_Shop.AddItem(new Purchasable);
               SkillPoint_Shop.AddItems(items.Select(c => c.Card.cardInfo.cardName + c.Card.cardInfo.name).ToArray(), items.ToArray());
               yield break;
           }
@@ -223,6 +270,8 @@ namespace PSGM.Monos
               Transform[] children = gameObject.GetComponentsInChildren<Transform>(true);
               return (from item in children where item.name == gameObjectName select item.gameObject).FirstOrDefault();
           }
-      }*/
+      }
     }
+    */
+
 }
