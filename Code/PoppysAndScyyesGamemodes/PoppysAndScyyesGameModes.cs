@@ -13,10 +13,10 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System;
 using System.Collections.Generic;
-using ChaosPoppycarsGamemodes.Gamemodes;
-using ChaosPoppycarsGamemodes.GamemodeHandlers;
+using PSGM.Gamemodes;
+using PSGM.GamemodeHandlers;
 
-namespace ChaosPoppycarsGamemodes
+namespace PSGM
 {
 
     // These are the mods required for our mod to work
@@ -30,13 +30,13 @@ namespace ChaosPoppycarsGamemodes
 
     // The game our mod is associated with
     [BepInProcess("Rounds.exe")]
-    public class ChaosPoppycarsGamemodes : BaseUnityPlugin
+    public class PoppysAndScyyesGameModes : BaseUnityPlugin
     {
         private const string ModId = "com.Poppycars.CPGM.Id";
-        private const string ModName = "ChaosPoppycarsGamemodes";
+        private const string ModName = "Poppys And Scyyes GameModes";
         public const string Version = "0.0.1"; // What version are we on (major.minor.patch)?
-        public const string ModInitials = "CPGM";
-        public static ChaosPoppycarsGamemodes Instance { get; private set; }
+        public const string ModInitials = "PSGM";
+        public static PoppysAndScyyesGameModes Instance { get; private set; }
         public static object CPGM_Assets { get; internal set; }
 
        // public static AssetBundle Bundle = Jotunn.Utils.AssetUtils.LoadAssetBundleFromResources("cpcart", typeof(ChaosPoppycarsCards).Assembly);
@@ -218,7 +218,7 @@ namespace ChaosPoppycarsGamemodes
         
         internal static AssetBundle ArtAssets;
     }
-    static class CPGMCardCategories
+    static class PSGMCardCategories
     {
         //public static CardCategory PotionCategory = CustomCardCategories.instance.CardCategory("UltimatePotion");
      

@@ -10,9 +10,9 @@ using System.Text;
 using UnboundLib;
 using UnboundLib.GameModes;
 using UnboundLib.Networking;
-using ChaosPoppycarsGamemodes.Monos;
+using PSGM.Monos;
 
-namespace ChaosPoppycarsGamemodes.Gamemodes
+namespace PSGM.Gamemodes
 {
     public class GM_SkillPoint : RWFGameMode
     {

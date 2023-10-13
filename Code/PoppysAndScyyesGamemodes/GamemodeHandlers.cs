@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using ChaosPoppycarsGamemodes.Gamemodes;
+using PSGM.Gamemodes;
 
-namespace ChaosPoppycarsGamemodes.GamemodeHandlers
+namespace PSGM.GamemodeHandlers
 {
 
     public class SkillPoint_Handler : RWFGameModeHandler<GM_SkillPoint>

@@ -11,10 +11,10 @@ using UnboundLib.Networking;
 using CardChoiceSpawnUniqueCardPatch.CustomCategories;
 using UnboundLib.Utils;
 using ModdingUtils.Utils;
-using ChaosPoppycarsGamemodes.Monos;
-using ChaosPoppycarsGamemodes.Extensions;
+using PSGM.Monos;
+using PSGM.Extensions;
 
-namespace ChaosPoppycarsGamemodes.Monos
+namespace PSGM.Monos
 {
     public class SkillPointShop
     {

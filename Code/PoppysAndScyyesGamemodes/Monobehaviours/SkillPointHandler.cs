@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnboundLib.Cards;
 using UnboundLib;
-using ChaosPoppycarsGamemodes.Monos;
-using ChaosPoppycarsGamemodes.Extensions;
+using PSGM.Monos;
+using PSGM.Extensions;
 
-namespace ChaosPoppycarsGamemodes.Monos
+namespace PSGM.Monos
 {
     public class SkillPointHandler : MonoBehaviour
     {

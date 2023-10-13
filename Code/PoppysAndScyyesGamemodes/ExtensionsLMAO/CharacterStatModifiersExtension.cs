@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using HarmonyLib;
 
-namespace ChaosPoppycarsGamemodes.Extensions
+namespace PSGM.Extensions
 {
     // ADD FIELDS TO GUN
     [Serializable]
