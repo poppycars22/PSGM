@@ -1,5 +1,6 @@
 ﻿using PoppyScyyeGameModes.Gamemodes;
 using UnityEngine;
+using PoppyScyyeGameModes.Gamemodes;
 
 namespace PoppyScyyeGameModes.Monos
 {
@@ -9,16 +10,7 @@ namespace PoppyScyyeGameModes.Monos
 
         public void Start()
         {
-            skillPoints = 10;
-        }
-
-        public void AddSkillPoints(int amount)
-        {
-            skillPoints += amount;
-        }
-        public void RemoveSkillPoints(int amount)
-        {
-            skillPoints -= amount;
+            // SkillPointShop.SkillPoints.Add("SkillPoints", 10);
         }
     }
 }
