@@ -1,0 +1,26 @@
+{
+    "name": "ChaosPoppycarsGamemodes",
+    "references": [
+        "UnboundLib",
+        "ModdingUtils",
+        "CardChoiceSpawnUniqueCardPatch",
+        "Unity.TextMeshPro"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "0Harmony.dll",
+        "BepInEx.dll",
+        "Assembly-CSharp.dll",
+        "SonigonAudioEngine.Runtime.dll",
+        "PhotonUnityNetworking.dll",
+        "TabInfo.dll",
+        "ItemShops.dll",
+        "RoundsWithFriends.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": []
+}
