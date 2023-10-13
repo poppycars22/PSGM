@@ -2,7 +2,6 @@
 using PoppyScyyeGameModes.Monos;
 using RWF.GameModes;
 using System.Collections;
-using System.Collections.Generic;
 using UnboundLib;
 
 namespace PoppyScyyeGameModes.Gamemodes
@@ -36,7 +35,7 @@ namespace PoppyScyyeGameModes.Gamemodes
             maxPlayers: null,
             maxTeams: null,
             maxClients: null,
-            description: $"Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 5 kills or from the Skill point card.")
+            description: "Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 5 kills or from the Skill point card.")
         {
 
         }
@@ -58,7 +57,7 @@ namespace PoppyScyyeGameModes.Gamemodes
             maxPlayers: null,
             maxTeams: null,
             maxClients: null,
-            description: $"Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 5 kills or from the Skill point card.")
+            description: "Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 5 kills or from the Skill point card.")
         {
 
         }
@@ -69,13 +68,10 @@ namespace PoppyScyyeGameModes.Gamemodes
     {
         public static Shop? SkillPointItemShop;
         public static string ShopID = "psgm.skillpoint";
-        public static Dictionary<string, int> SkillPoints = new Dictionary<string, int>();
         public static CharacterStatModifiers? CharacterStats;
 
         internal static IEnumerator SkillUp()
         {
-            SkillPoints = new Dictionary<string, int>();
-
             if (SkillPointItemShop != null)
                 ShopManager.instance.RemoveShop(SkillPointItemShop);
             SkillPointItemShop = ShopManager.instance.CreateShop(ShopID);
