@@ -1,21 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace PoppyScyyeGameModes.Cards
 {
-    internal class HealthSkillPoint : SkillPointCard
+    internal class RegenerationSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.health = 1.15f;
+            statModifiers.regen = 1;
         }
 
         protected override CardInfoStat GetStat()
         {
             return new CardInfoStat()
             {
-                amount = "+15%",
+                amount = "+1",
                 positive = true,
-                stat = "Health"
+                stat = "Regeneration"
             };
         }
     }

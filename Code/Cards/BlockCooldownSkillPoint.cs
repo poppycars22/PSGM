@@ -1,21 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace PoppyScyyeGameModes.Cards
 {
-    internal class HealthSkillPoint : SkillPointCard
+    internal class BlockCooldownSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.health = 1.15f;
+            block.cdMultiplier = 0.85f;
         }
 
         protected override CardInfoStat GetStat()
         {
             return new CardInfoStat()
             {
-                amount = "+15%",
-                positive = true,
-                stat = "Health"
+                amount = "-15%",
+                stat = "Block Cooldown",
+                positive = true
             };
         }
     }

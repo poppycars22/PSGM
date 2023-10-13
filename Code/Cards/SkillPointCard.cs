@@ -48,7 +48,10 @@ namespace PoppyScyyeGameModes.Cards
             };
         }
 
-        protected abstract override string GetTitle();
+        protected override string GetTitle()
+        {
+            return GetStat().stat;
+        }
         protected abstract CardInfoStat GetStat();
     }
 }
