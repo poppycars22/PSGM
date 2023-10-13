@@ -1,2 +1,3 @@
-# ChaosPoppycarsGameModes
- Adds 1 Gamemode to ROUNDS, more might come in the future
+# PSGM, Poppys And Scyyes GameModes
+ (Playstation Grandma) A mod that adds gamemodes (or playstation grandmas)
+ 
