@@ -72,8 +72,9 @@ namespace PoppyScyyeGameModes.Gamemodes
 
     public class SkillPointShop
     {
-        #pragma warning disable CS8618
+#pragma warning disable CS8618
         public static Shop SkillPointItemShop;
+        public const string SkillPoints = "Skill Points";
         public static string ShopID = "psgm.skillpoint";
         public static CharacterStatModifiers? CharacterStats;
 
@@ -111,14 +112,14 @@ namespace PoppyScyyeGameModes.Gamemodes
             GameObject timer = null;
             float time = 120;
             PlayerManager.instance.players.ForEach(p => {
-                // if (p.GetAdditionalData().bankAccount.HasFunds()) { SkillPointItemShop.Show(p); done = false; }
+                if (p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } })) { SkillPointItemShop.Show(p); done = false; }
             });
 
             if (!done)
             {
                 gameObject = new GameObject();
                 gameObject.AddComponent<Canvas>().sortingLayerName = "MostFront";
-                gameObject.AddComponent<TextMeshProUGUI>().text = "Waiting For Players In Wish Menu";
+                gameObject.AddComponent<TextMeshProUGUI>().text = "Waiting For Players to skill up";
                 Color c = Color.magenta;
                 c.a = .85f;
                 gameObject.GetComponent<TextMeshProUGUI>().color = c;

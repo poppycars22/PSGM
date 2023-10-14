@@ -1,16 +1,21 @@
 ﻿using PoppyScyyeGameModes.Gamemodes;
 using UnityEngine;
-using PoppyScyyeGameModes.Gamemodes;
+using Photon.Pun.Simple;
+using Photon.Realtime;
+using System.Collections.Generic;
+using ItemShops.Extensions;
+using ItemShops.Utils;
+using RWF.GameModes;
 
 namespace PoppyScyyeGameModes.Monos
 {
     public class SkillPointMono : MonoBehaviour
     {
-        public int skillPoints { get; private set; }
+        Player player;
 
         public void Start()
         {
-            // SkillPointShop.SkillPoints.Add("SkillPoints", 10);
+            player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 10 } });
         }
     }
 }
