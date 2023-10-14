@@ -51,13 +51,18 @@ namespace PoppyScyyeGameModes
             GameModeManager.AddHandler<RandomCardPickGM>(RandomCardPickTeamHandler.GameModeID, new RandomCardPickTeamHandler());
 
             CustomCard.BuildCard<AmmoSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            
             CustomCard.BuildCard<BlockCooldownSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<DamageSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<HealthSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<BlockSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<RegenerationSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<BounceSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<JumpSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<MoveSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<ProjectileSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<ProjectileSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<ProjectileSimSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<SpreadSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
         }
 
     }
