@@ -1,5 +1,6 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using PickNCards;
 using PoppyScyyeGameModes.Cards;
 using PoppyScyyeGameModes.Gamemodes;
 using UnboundLib;
@@ -13,6 +14,7 @@ namespace PoppyScyyeGameModes
     [BepInDependency("pykess.rounds.plugins.moddingutils", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("io.olavim.rounds.rwf", BepInDependency.DependencyFlags.HardDependency)]
     [BepInDependency("com.willuwontu.rounds.itemshops", BepInDependency.DependencyFlags.HardDependency)]
+    [BepInDependency("pykess.rounds.plugins.pickncards")]
     // Declares our mod to Bepin
     [BepInPlugin(ModId, ModName, Version)]
 
@@ -44,6 +46,9 @@ namespace PoppyScyyeGameModes
         {
             GameModeManager.AddHandler<SkillPointGM>(SkillPointHandler.GameModeID, new SkillPointHandler());
             GameModeManager.AddHandler<SkillPointGM>(SkillPointTeamHandler.GameModeID, new SkillPointTeamHandler());
+
+            GameModeManager.AddHandler<RandomCardPickGM>(RandomCardPickHandler.GameModeID, new RandomCardPickHandler());
+            GameModeManager.AddHandler<RandomCardPickGM>(RandomCardPickTeamHandler.GameModeID, new RandomCardPickTeamHandler());
 
             CustomCard.BuildCard<AmmoSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             
