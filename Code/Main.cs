@@ -66,7 +66,8 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<ProjectileSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<ProjectileSimSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<SpreadSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            
+
+
             GameModeManager.AddHook(GameModeHooks.HookPickEnd, (gm) => SkillPointShop.WaitTillShopDone());
             GameModeManager.AddHook(GameModeHooks.HookGameStart, GameStart);
         }
