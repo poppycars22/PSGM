@@ -72,7 +72,7 @@ namespace PoppyScyyeGameModes.Gamemodes
 
     public class SkillPointShop
     {
-#pragma warning disable CS8618
+        #pragma warning disable CS8618
         public static Shop SkillPointItemShop;
         public const string SkillPoints = "Skill Points";
         public static string ShopID = "psgm.skillpoint";

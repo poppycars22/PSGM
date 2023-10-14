@@ -45,13 +45,14 @@ namespace PoppyScyyeGameModes
             GameModeManager.AddHandler<SkillPointGM>(SkillPointHandler.GameModeID, new SkillPointHandler());
             GameModeManager.AddHandler<SkillPointGM>(SkillPointTeamHandler.GameModeID, new SkillPointTeamHandler());
 
-            CustomCard.BuildCard<AmmoSkillPoint>();
-            CustomCard.BuildCard<BlockCooldownSkillPoint>();
-            CustomCard.BuildCard<DamageSkillPoint>();
-            CustomCard.BuildCard<HealthSkillPoint>();
-            CustomCard.BuildCard<BlockSkillPoint>();
-            CustomCard.BuildCard<RegenerationSkillPoint>();
-            CustomCard.BuildCard<BounceSkillPoint>();
+            CustomCard.BuildCard<AmmoSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            
+            CustomCard.BuildCard<BlockCooldownSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<DamageSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<HealthSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<BlockSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<RegenerationSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<BounceSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
         }
 
     }
