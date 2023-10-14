@@ -15,7 +15,8 @@ namespace PoppyScyyeGameModes.Monos
 
         public void Start()
         {
-            player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 10 } });
+            this.player = this.GetComponentInParent<Player>();
+           player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 10 } });
         }
     }
 }
