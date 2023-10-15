@@ -1,10 +1,13 @@
 ﻿using BepInEx;
 using HarmonyLib;
+using Landfall.AI;
 using PickNCards;
 using PoppyScyyeGameModes.Cards;
 using PoppyScyyeGameModes.Gamemodes;
+using PoppyScyyeGameModes.Monos;
 using UnboundLib;
 using UnboundLib.Cards;
+using System.Collections;
 using UnboundLib.GameModes;
 
 namespace PoppyScyyeGameModes
@@ -63,7 +66,15 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<ProjectileSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<ProjectileSimSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<SpreadSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-        }
 
+
+            GameModeManager.AddHook(GameModeHooks.HookPickEnd, (gm) => SkillPointShop.WaitUntillShopDone());
+            GameModeManager.AddHook(GameModeHooks.HookGameStart, GameStart);
+        }
+        internal IEnumerator GameStart(IGameModeHandler gm)
+        {
+            yield return SkillPointShop.SkillUp();
+            yield break;
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace PoppyScyyeGameModes.Cards
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
             gun.damage = 1.15f;
+            Cards.Add(this);
         }
 
         protected override CardInfoStat GetStat()

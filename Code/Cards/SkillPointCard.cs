@@ -8,7 +8,7 @@ namespace PoppyScyyeGameModes.Cards
 {
     internal abstract class SkillPointCard : CustomCard
     {
-        public static List<SkillPointCard> Cards;
+        public static List<SkillPointCard> Cards = new List<SkillPointCard>();
         public abstract override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block);
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers)
@@ -19,11 +19,15 @@ namespace PoppyScyyeGameModes.Cards
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
         }
-        
+
 
         protected override GameObject GetCardArt()
         {
             return null;
+        }
+        public override bool GetEnabled()
+        {
+            return false;
         }
 
         public override string GetModName()

@@ -5,7 +5,8 @@
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
             gun.numberOfProjectiles = 1;
-            gun.multiplySpread = 1.05f;
+            gun.spread = 0.1f;
+            Cards.Add(this);
         }
 
         protected override CardInfoStat GetStat()
@@ -26,7 +27,7 @@
                 {
                     positive = false,
                     stat = "Spread",
-                    amount = "+5%",
+                    amount = "+10%",
                     simepleAmount = CardInfoStat.SimpleAmount.notAssigned
                 }
             };
