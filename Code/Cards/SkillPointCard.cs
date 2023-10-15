@@ -8,7 +8,7 @@ namespace PoppyScyyeGameModes.Cards
 {
     internal abstract class SkillPointCard : CustomCard
     {
-        public static List<SkillPointCard> Cards;
+        public static List<SkillPointCard> Cards = new List<SkillPointCard>();
         public abstract override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block);
 
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers)

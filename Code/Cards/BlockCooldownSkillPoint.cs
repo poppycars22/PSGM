@@ -9,6 +9,7 @@ namespace PoppyScyyeGameModes.Cards
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
             block.cdMultiplier = 0.85f;
+            Cards.Add(this);
         }
 
         protected override CardInfoStat GetStat()

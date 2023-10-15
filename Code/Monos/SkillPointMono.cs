@@ -34,6 +34,8 @@ namespace PoppyScyyeGameModes.Monos
         public static Dictionary<String, int> Skill_Points = new Dictionary<String, int>();
         public static string ShopID = "psgm.skillpoint";
         public static CharacterStatModifiers? CharacterStats;
+        public static readonly Tag SkillPointTag = new Tag("Stats");
+
 
         public static Dictionary<Player, int> PlayerSkillPoints = new Dictionary<Player, int>();
 
@@ -68,12 +70,13 @@ namespace PoppyScyyeGameModes.Monos
             UnityEngine.Debug.Log("2.2");
             List<PurchasableCard> cards = new List<PurchasableCard>();
             UnityEngine.Debug.Log("3.2");
+            UnityEngine.Debug.Log(SkillPointCard.Cards);
             foreach (var c in SkillPointCard.Cards)
             {
                 UnityEngine.Debug.Log("4.2");
                 map.Add("Skill Points", c.GetCost());
                 UnityEngine.Debug.Log("5.2");
-                cards.Add(new PurchasableCard(c.cardInfo, map, new[] { new Tag("Skill Stat") }));
+                cards.Add(new PurchasableCard(c.cardInfo, map, new Tag[] { SkillPointTag }));
                 UnityEngine.Debug.Log("6.2");
                 map.Remove("Skill Points");
                 UnityEngine.Debug.Log("7.2");

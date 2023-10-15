@@ -5,6 +5,7 @@
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
             statModifiers.numberOfJumps = 1;
+            Cards.Add(this);
         }
 
         protected override CardInfoStat GetStat()

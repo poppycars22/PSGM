@@ -6,6 +6,7 @@
         {
             gun.numberOfProjectiles = 1;
             gun.multiplySpread = 1.1f;
+            Cards.Add(this);
         }
 
         protected override CardInfoStat GetStat()
