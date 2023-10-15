@@ -5,7 +5,7 @@
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
             gun.numberOfProjectiles = 1;
-            gun.multiplySpread = 1.1f;
+            gun.spread = 0.1f;
             Cards.Add(this);
         }
 

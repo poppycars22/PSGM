@@ -11,6 +11,7 @@ using System.Collections;
 using TMPro;
 using ModdingUtils.GameModes;
 using System;
+using System.Linq;
 
 namespace PoppyScyyeGameModes.Monos
 {
@@ -22,7 +23,10 @@ namespace PoppyScyyeGameModes.Monos
             UnityEngine.Debug.Log("1");
             Player player = this.GetComponentInParent<Player>();
             UnityEngine.Debug.Log("2");
-            player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 10 } });
+            
+            SkillPointShop.SkillUp();
+            player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 1 } });
+
             UnityEngine.Debug.Log("3");
         }
     }
@@ -37,14 +41,14 @@ namespace PoppyScyyeGameModes.Monos
         public static readonly Tag SkillPointTag = new Tag("Stats");
 
 
-        public static Dictionary<Player, int> PlayerSkillPoints = new Dictionary<Player, int>();
+        
 
         internal static IEnumerator SkillUp()
         {
             UnityEngine.Debug.Log("1.1");
             Skill_Points = new Dictionary<string, int>();
             UnityEngine.Debug.Log("2.1");
-            //Skill_Points.Add("Skill Points", 1);
+            Skill_Points.Add("Skill Points", 1);
             if (SkillPointItemShop != null)
             {
                 UnityEngine.Debug.Log("3.1");
@@ -74,20 +78,24 @@ namespace PoppyScyyeGameModes.Monos
             foreach (var c in SkillPointCard.Cards)
             {
                 UnityEngine.Debug.Log("4.2");
-                map.Add("Skill Points", c.GetCost());
+                map.Add(SkillPoints, c.GetCost());
                 UnityEngine.Debug.Log("5.2");
+                UnityEngine.Debug.Log(map);
+                UnityEngine.Debug.Log(c.GetCost());
                 cards.Add(new PurchasableCard(c.cardInfo, map, new Tag[] { SkillPointTag }));
+                UnityEngine.Debug.Log(cards);
                 UnityEngine.Debug.Log("6.2");
-                map.Remove("Skill Points");
+                map.Remove(SkillPoints);
                 UnityEngine.Debug.Log("7.2");
             }
             UnityEngine.Debug.Log("8.2");
-            SkillPointItemShop.AddItems(cards.ToArray());
+            //SkillPointItemShop.AddItems(cards.ToArray());
+            SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray());
             UnityEngine.Debug.Log("9.2");
             yield break;
         }
 
-        internal static IEnumerator WaitTillShopDone()
+        internal static IEnumerator WaitUntillShopDone()
         {
             UnityEngine.Debug.Log("1.3");
             bool done = true;
@@ -98,8 +106,11 @@ namespace PoppyScyyeGameModes.Monos
             UnityEngine.Debug.Log("4.3");
             float time = 120;
             UnityEngine.Debug.Log("5.3");
-            PlayerManager.instance.players.ForEach(p => {
+            PlayerManager.instance.players.ForEach(p =>
+            {
                 UnityEngine.Debug.Log("6.3");
+                UnityEngine.Debug.Log(p.GetAdditionalData().bankAccount);
+                UnityEngine.Debug.Log(p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } }));
                 if (p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } })) { SkillPointItemShop.Show(p); done = false; }
             });
             UnityEngine.Debug.Log("7.3");
@@ -129,6 +140,7 @@ namespace PoppyScyyeGameModes.Monos
             while (!done)
             {
                 UnityEngine.Debug.Log("9.3");
+                
                 timer.GetComponent<TextMeshProUGUI>().text = ((int)time).ToString();
                 done = true;
                 yield return new WaitForSecondsRealtime(0.2f);

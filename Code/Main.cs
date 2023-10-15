@@ -68,7 +68,7 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<SpreadSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
 
 
-            GameModeManager.AddHook(GameModeHooks.HookPickEnd, (gm) => SkillPointShop.WaitTillShopDone());
+            GameModeManager.AddHook(GameModeHooks.HookPickEnd, (gm) => SkillPointShop.WaitUntillShopDone());
             GameModeManager.AddHook(GameModeHooks.HookGameStart, GameStart);
         }
         internal IEnumerator GameStart(IGameModeHandler gm)
