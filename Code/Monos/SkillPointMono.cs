@@ -23,7 +23,7 @@ namespace PoppyScyyeGameModes.Monos
             UnityEngine.Debug.Log("1");
             Player player = this.GetComponentInParent<Player>();
             UnityEngine.Debug.Log("2");
-            
+
             SkillPointShop.SkillUp();
             player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 1 } });
 
@@ -41,7 +41,7 @@ namespace PoppyScyyeGameModes.Monos
         public static readonly Tag SkillPointTag = new Tag("Stats");
 
 
-        
+
 
         internal static IEnumerator SkillUp()
         {
@@ -78,7 +78,7 @@ namespace PoppyScyyeGameModes.Monos
             foreach (var c in SkillPointCard.Cards)
             {
                 UnityEngine.Debug.Log("4.2");
-                map.Add(SkillPoints, c.GetCost());
+                map.Add(SkillPoints, 1/*c.GetCost()*/);
                 UnityEngine.Debug.Log("5.2");
                 UnityEngine.Debug.Log(map);
                 UnityEngine.Debug.Log(c.GetCost());
@@ -90,7 +90,7 @@ namespace PoppyScyyeGameModes.Monos
             }
             UnityEngine.Debug.Log("8.2");
             //SkillPointItemShop.AddItems(cards.ToArray());
-            SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray());
+            SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray(), new PurchaseLimit(0, 0));
             UnityEngine.Debug.Log("9.2");
             yield break;
         }
@@ -140,12 +140,13 @@ namespace PoppyScyyeGameModes.Monos
             while (!done)
             {
                 UnityEngine.Debug.Log("9.3");
-                
+
                 timer.GetComponent<TextMeshProUGUI>().text = ((int)time).ToString();
                 done = true;
                 yield return new WaitForSecondsRealtime(0.2f);
                 time -= 0.2f;
-                PlayerManager.instance.players.ForEach(p => {
+                PlayerManager.instance.players.ForEach(p =>
+                {
                     if (ShopManager.instance.PlayerIsInShop(p))
                         done = false;
                 });
