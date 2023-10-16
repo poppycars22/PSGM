@@ -20,14 +20,8 @@ namespace PoppyScyyeGameModes.Monos
 
         public void Awake()
         {
-            UnityEngine.Debug.Log("1");
             Player player = this.GetComponentInParent<Player>();
-            UnityEngine.Debug.Log("2");
-
-            SkillPointShop.SkillUp();
-            player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 1 } });
-
-            UnityEngine.Debug.Log("3");
+            player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 10 } });
         }
     }
     public class SkillPointShop
@@ -45,78 +39,42 @@ namespace PoppyScyyeGameModes.Monos
 
         internal static IEnumerator SkillUp()
         {
-            UnityEngine.Debug.Log("1.1");
             Skill_Points = new Dictionary<string, int>();
-            UnityEngine.Debug.Log("2.1");
             Skill_Points.Add("Skill Points", 1);
             if (SkillPointItemShop != null)
             {
-                UnityEngine.Debug.Log("3.1");
                 ShopManager.instance.RemoveShop(SkillPointItemShop);
-                UnityEngine.Debug.Log("4.1");
             }
-            UnityEngine.Debug.Log("5.1");
             SkillPointItemShop = ShopManager.instance.CreateShop(ShopID);
-            UnityEngine.Debug.Log("6.1");
             SkillPointItemShop.UpdateMoneyColumnName("Skill Points");
-            UnityEngine.Debug.Log("7.1");
-            SkillPointItemShop.UpdateTitle("Test Title For Now");
-            UnityEngine.Debug.Log("8.1");
+            SkillPointItemShop.UpdateTitle("Skill Up");
             Main.instance.StartCoroutine(SetUpShop());
-            UnityEngine.Debug.Log("9.1");
             yield break;
         }
 
         internal static IEnumerator SetUpShop()
         {
-            UnityEngine.Debug.Log("1.2");
-            Dictionary<string, int> map = new Dictionary<string, int>();
-            UnityEngine.Debug.Log("2.2");
             List<PurchasableCard> cards = new List<PurchasableCard>();
-            UnityEngine.Debug.Log("3.2");
-            UnityEngine.Debug.Log(SkillPointCard.Cards);
             foreach (var c in SkillPointCard.Cards)
             {
-                UnityEngine.Debug.Log("4.2");
-                map.Add(SkillPoints, 1/*c.GetCost()*/);
-                UnityEngine.Debug.Log("5.2");
-                UnityEngine.Debug.Log(map);
-                UnityEngine.Debug.Log(c.GetCost());
-                cards.Add(new PurchasableCard(c.cardInfo, map, new Tag[] { SkillPointTag }));
-                UnityEngine.Debug.Log(cards);
-                UnityEngine.Debug.Log("6.2");
-                map.Remove(SkillPoints);
-                UnityEngine.Debug.Log("7.2");
+                cards.Add(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag }));
             }
-            UnityEngine.Debug.Log("8.2");
-            //SkillPointItemShop.AddItems(cards.ToArray());
             SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray(), new PurchaseLimit(0, 0));
-            UnityEngine.Debug.Log("9.2");
             yield break;
         }
 
         internal static IEnumerator WaitUntillShopDone()
         {
-            UnityEngine.Debug.Log("1.3");
             bool done = true;
-            UnityEngine.Debug.Log("2.3");
             GameObject gameObject = new GameObject();
-            UnityEngine.Debug.Log("3.3");
             GameObject timer = new GameObject();
-            UnityEngine.Debug.Log("4.3");
             float time = 120;
-            UnityEngine.Debug.Log("5.3");
             PlayerManager.instance.players.ForEach(p =>
             {
-                UnityEngine.Debug.Log("6.3");
-                UnityEngine.Debug.Log(p.GetAdditionalData().bankAccount);
-                UnityEngine.Debug.Log(p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } }));
                 if (p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } })) { SkillPointItemShop.Show(p); done = false; }
             });
-            UnityEngine.Debug.Log("7.3");
             if (!done)
             {
-                UnityEngine.Debug.Log("8.3");
                 gameObject = new GameObject();
                 gameObject.AddComponent<Canvas>().sortingLayerName = "MostFront";
                 gameObject.AddComponent<TextMeshProUGUI>().text = "Waiting For Players to skill up";
@@ -139,8 +97,6 @@ namespace PoppyScyyeGameModes.Monos
             }
             while (!done)
             {
-                UnityEngine.Debug.Log("9.3");
-
                 timer.GetComponent<TextMeshProUGUI>().text = ((int)time).ToString();
                 done = true;
                 yield return new WaitForSecondsRealtime(0.2f);
@@ -149,6 +105,10 @@ namespace PoppyScyyeGameModes.Monos
                 {
                     if (ShopManager.instance.PlayerIsInShop(p))
                         done = false;
+                    if (!p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } }))
+                    {
+                        ShopManager.instance.HideAllShops(p);
+                    }
                 });
                 if (time <= 0)
                 {
