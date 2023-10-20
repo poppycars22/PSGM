@@ -17,5 +17,9 @@
                 positive = true
             };
         }
+        public override string GetCategory()
+        {
+            return "Player";
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace PoppyScyyeGameModes.Monos
         public static string ShopID = "psgm.skillpoint";
         public static CharacterStatModifiers? CharacterStats;
         public static readonly Tag SkillPointTag = new Tag("Stats");
+        public static Tag cardTag;
 
 
 
@@ -57,7 +58,8 @@ namespace PoppyScyyeGameModes.Monos
             List<PurchasableCard> cards = new List<PurchasableCard>();
             foreach (var c in SkillPointCard.Cards)
             {
-                cards.Add(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag }));
+                cardTag = new Tag(c.GetCategory());
+                cards.Add(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag, cardTag }));
             }
             SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray(), new PurchaseLimit(0, 0));
             yield break;

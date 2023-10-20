@@ -23,5 +23,9 @@
         {
             return 5;
         }
+        public override string GetCategory()
+        {
+            return "Block";
+        }
     }
 }

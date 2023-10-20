@@ -19,5 +19,9 @@ namespace PoppyScyyeGameModes.Cards
                 stat = "Health"
             };
         }
+        public override string GetCategory()
+        {
+            return "Player";
+        }
     }
 }

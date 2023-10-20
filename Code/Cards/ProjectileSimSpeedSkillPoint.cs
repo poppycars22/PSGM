@@ -4,7 +4,7 @@
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            gun.projectielSimulatonSpeed = 1.25f;
+            gun.projectielSimulatonSpeed = 1.15f;
             Cards.Add(this);
         }
 
@@ -12,7 +12,7 @@
         {
             return new CardInfoStat()
             {
-                amount = "+25%",
+                amount = "+15%",
                 stat = "Projectile Simulation Speed",
                 positive = true
             };

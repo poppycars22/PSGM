@@ -21,5 +21,9 @@ namespace PoppyScyyeGameModes.Cards
                 stat = "Regeneration"
             };
         }
+        public override string GetCategory()
+        {
+            return "Player";
+        }
     }
 }

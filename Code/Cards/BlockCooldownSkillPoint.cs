@@ -21,5 +21,13 @@ namespace PoppyScyyeGameModes.Cards
                 positive = true
             };
         }
+        public override string GetCategory()
+        {
+            return "Block";
+        }
+        public override int GetCost()
+        {
+            return 2;
+        }
     }
 }
