@@ -1,17 +1,12 @@
-﻿using PoppyScyyeGameModes.Gamemodes;
-using UnityEngine;
-using Photon.Pun.Simple;
-using Photon.Realtime;
+﻿using UnityEngine;
 using System.Collections.Generic;
-using ItemShops.Extensions;
 using ItemShops.Utils;
-using RWF.GameModes;
 using PoppyScyyeGameModes.Cards;
 using System.Collections;
 using TMPro;
-using ModdingUtils.GameModes;
 using System;
 using System.Linq;
+using PoppyScyyeGameModes.Extentions;
 
 namespace PoppyScyyeGameModes.Monos
 {
@@ -21,12 +16,12 @@ namespace PoppyScyyeGameModes.Monos
         public void Awake()
         {
             Player player = this.GetComponentInParent<Player>();
-            player.GetAdditionalData().bankAccount.Deposit(new Dictionary<string, int> { { "Skill Points", 10 } });
+            player.AddSkillPoints(1);
         }
     }
     public class SkillPointShop
     {
-#pragma warning disable CS8618
+        #pragma warning disable CS8618
         public static Shop SkillPointItemShop;
         public const string SkillPoints = "Skill Points";
         public static Dictionary<String, int> Skill_Points = new Dictionary<String, int>();
@@ -73,7 +68,7 @@ namespace PoppyScyyeGameModes.Monos
             float time = 120;
             PlayerManager.instance.players.ForEach(p =>
             {
-                if (p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } })) { SkillPointItemShop.Show(p); done = false; }
+                if (p.GetSkillPoints() > 0) { SkillPointItemShop.Show(p); done = false; }
             });
             if (!done)
             {
@@ -107,7 +102,7 @@ namespace PoppyScyyeGameModes.Monos
                 {
                     if (ShopManager.instance.PlayerIsInShop(p))
                         done = false;
-                    if (!p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } }))
+                    if (p.GetSkillPoints() == 0)
                     {
                         SkillPointItemShop.Hide();
                     }
@@ -119,8 +114,8 @@ namespace PoppyScyyeGameModes.Monos
                 }
 
             }
-            GameObject.Destroy(gameObject);
-            GameObject.Destroy(timer);
+            UnityEngine.Object.Destroy(gameObject);
+            UnityEngine.Object.Destroy(timer);
         }
     }
 }
