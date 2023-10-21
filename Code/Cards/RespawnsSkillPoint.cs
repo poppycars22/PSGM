@@ -21,12 +21,12 @@ namespace PoppyScyyeGameModes.Cards
         }
         public override int GetCost()
         {
-            return 20;
+            return 1;
         }
-        /*public override int GetLimit()
+        public override int GetLimit()
         {
             return 2;
-        }*/
+        }
         public override string GetCategory()
         {
             return "Player";
