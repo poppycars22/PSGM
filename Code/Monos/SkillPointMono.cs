@@ -104,7 +104,7 @@ namespace PoppyScyyeGameModes.Monos
                         done = false;
                     if (p.GetSkillPoints() == 0)
                     {
-                        SkillPointItemShop.Hide();
+                        ShopManager.instance.HideAllShops(p);
                     }
                 });
                 if (time <= 0)
