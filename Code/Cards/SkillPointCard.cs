@@ -67,6 +67,10 @@ namespace PoppyScyyeGameModes.Cards
         {
             return 1;
         }
+        /*public virtual int GetLimit()
+        {
+            return 0;
+        }*/
         public virtual string GetCategory()
         {
             return "Gun";

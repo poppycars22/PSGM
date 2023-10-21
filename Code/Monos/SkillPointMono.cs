@@ -7,6 +7,7 @@ using TMPro;
 using System;
 using System.Linq;
 using PoppyScyyeGameModes.Extentions;
+using ItemShops.Extensions;
 
 namespace PoppyScyyeGameModes.Monos
 {
@@ -16,7 +17,7 @@ namespace PoppyScyyeGameModes.Monos
         public void Awake()
         {
             Player player = this.GetComponentInParent<Player>();
-            player.AddSkillPoints(1);
+            player.AddSkillPoints(10);
         }
     }
     public class SkillPointShop
@@ -54,9 +55,10 @@ namespace PoppyScyyeGameModes.Monos
             foreach (var c in SkillPointCard.Cards)
             {
                 cardTag = new Tag(c.GetCategory());
+                //SkillPointItemShop.AddItem(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag, cardTag }), new PurchaseLimit(0, c.GetLimit()));
                 cards.Add(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag, cardTag }));
             }
-            SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray(), new PurchaseLimit(0, 0));
+            SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray(), new PurchaseLimit(0, 0)) ;
             yield break;
         }
 
@@ -68,14 +70,14 @@ namespace PoppyScyyeGameModes.Monos
             float time = 120;
             PlayerManager.instance.players.ForEach(p =>
             {
-                if (p.GetSkillPoints() > 0) { SkillPointItemShop.Show(p); done = false; }
+                if (p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } })) { SkillPointItemShop.Show(p); done = false; }
             });
             if (!done)
             {
                 gameObject = new GameObject();
                 gameObject.AddComponent<Canvas>().sortingLayerName = "MostFront";
                 gameObject.AddComponent<TextMeshProUGUI>().text = "Waiting For Players to skill up";
-                Color c = Color.magenta;
+                Color c = Color.yellow;
                 c.a = .85f;
                 gameObject.GetComponent<TextMeshProUGUI>().color = c;
                 gameObject.transform.localScale = new Vector3(.2f, .2f);
@@ -102,9 +104,9 @@ namespace PoppyScyyeGameModes.Monos
                 {
                     if (ShopManager.instance.PlayerIsInShop(p))
                         done = false;
-                    if (p.GetSkillPoints() == 0)
+                    if (!p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } }) && p.data.view.IsMine)
                     {
-                        ShopManager.instance.HideAllShops(p);
+                        SkillPointItemShop.Hide();
                     }
                 });
                 if (time <= 0)
