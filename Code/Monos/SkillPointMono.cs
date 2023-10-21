@@ -109,7 +109,7 @@ namespace PoppyScyyeGameModes.Monos
                         done = false;
                     if (!p.GetAdditionalData().bankAccount.HasFunds(new Dictionary<string, int> { { SkillPoints, 1 } }))
                     {
-                        SkillPointItemShop.Hide();
+                        ShopManager.instance.HideAllShops(p);
                     }
                 });
                 if (time <= 0)
