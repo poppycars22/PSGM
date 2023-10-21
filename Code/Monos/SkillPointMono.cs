@@ -51,14 +51,22 @@ namespace PoppyScyyeGameModes.Monos
 
         internal static IEnumerator SetUpShop()
         {
-            //List<PurchasableCard> cards = new List<PurchasableCard>();
+            List<PurchasableCard> cards = new List<PurchasableCard>();
             foreach (var c in SkillPointCard.Cards)
             {
-                cardTag = new Tag(c.GetCategory());
-                SkillPointItemShop.AddItem(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag, cardTag }), new PurchaseLimit(0, c.GetLimit()));
-                //cards.Add(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag, cardTag }));
+                if (c.GetLimit() == 0)
+                {
+                    cardTag = new Tag(c.GetCategory());
+                    //SkillPointItemShop.AddItem(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag, cardTag }), new PurchaseLimit(0, c.GetLimit()));
+                    cards.Add(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag, cardTag }));
+                }
+                else
+                {
+                        SkillPointItemShop.AddItem(new PurchasableCard(c.cardInfo, new Dictionary<string, int> { { SkillPoints, c.GetCost() } }, new Tag[] { SkillPointTag, cardTag, new Tag("Limited") }), new PurchaseLimit(0, c.GetLimit()));
+                }
+
             }
-            //SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray(), new PurchaseLimit(0, 0)) ;
+            SkillPointItemShop.AddItems(cards.Select(c => c.Card.cardName + c.Card.name).ToArray(), cards.ToArray(), new PurchaseLimit(0, 0));
             yield break;
         }
 
