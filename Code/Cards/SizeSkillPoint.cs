@@ -2,11 +2,11 @@
 
 namespace PoppyScyyeGameModes.Cards
 {
-    internal class RespawnsSkillPoint : SkillPointCard
+    internal class SizeSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.respawns = 1;
+            statModifiers.sizeMultiplier = 0.9f;
             Cards.Add(this);
         }
 
@@ -14,22 +14,18 @@ namespace PoppyScyyeGameModes.Cards
         {
             return new CardInfoStat()
             {
-                amount = "+1",
+                amount = "-10%",
                 positive = true,
-                stat = "Respawn"
+                stat = "Size"
             };
-        }
-        public override int GetCost()
-        {
-            return 10;
-        }
-        public override int GetLimit()
-        {
-            return 2;
         }
         public override string GetCategory()
         {
             return "Player";
+        }
+        public override int GetLimit()
+        {
+            return 7;
         }
     }
 }

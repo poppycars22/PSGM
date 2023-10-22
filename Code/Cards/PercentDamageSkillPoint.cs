@@ -2,11 +2,11 @@
 
 namespace PoppyScyyeGameModes.Cards
 {
-    internal class RespawnsSkillPoint : SkillPointCard
+    internal class PercentDamageSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.respawns = 1;
+            gun.percentageDamage = 0.1f;
             Cards.Add(this);
         }
 
@@ -14,22 +14,18 @@ namespace PoppyScyyeGameModes.Cards
         {
             return new CardInfoStat()
             {
-                amount = "+1",
+                amount = "+10%",
                 positive = true,
-                stat = "Respawn"
+                stat = "Percentage Damage"
             };
         }
         public override int GetCost()
         {
-            return 10;
+            return 5;
         }
         public override int GetLimit()
         {
-            return 2;
-        }
-        public override string GetCategory()
-        {
-            return "Player";
+            return 5;
         }
     }
 }

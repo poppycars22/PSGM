@@ -37,7 +37,10 @@ namespace PoppyScyyeGameModes.Cards
 
         protected override string GetDescription()
         {
-            return "";
+            if (GetLimit() == 0)
+                return "";
+            else
+                return "Limit of " + GetLimit();
         }
 
         protected override CardInfo.Rarity GetRarity()
