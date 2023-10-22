@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace PoppyScyyeGameModes.Cards
+﻿namespace PoppyScyyeGameModes.Cards
 {
     internal class PercentDamageSkillPoint : SkillPointCard
     {

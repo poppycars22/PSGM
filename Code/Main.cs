@@ -1,12 +1,13 @@
 ﻿using BepInEx;
 using HarmonyLib;
-using PoppyScyyeGameModes.Cards;
 using PoppyScyyeGameModes.Gamemodes;
 using PoppyScyyeGameModes.Monos;
 using UnboundLib;
 using UnboundLib.Cards;
 using System.Collections;
 using UnboundLib.GameModes;
+using PoppyScyyeGameModes.Cards;
+using UnboundLib.Utils;
 
 namespace PoppyScyyeGameModes
 {
@@ -43,6 +44,8 @@ namespace PoppyScyyeGameModes
             harmony.PatchAll();
         }
 
+        internal CardInfo GiveSkillPointCard;
+
         void Start()
         {
             GameModeManager.AddHandler<SkillPointGM>(SkillPointHandler.GameModeID, new SkillPointHandler());
@@ -51,39 +54,55 @@ namespace PoppyScyyeGameModes
             GameModeManager.AddHandler<RandomCardPickGM>(RandomCardPickHandler.GameModeID, new RandomCardPickHandler());
             GameModeManager.AddHandler<RandomCardPickGM>(RandomCardPickTeamHandler.GameModeID, new RandomCardPickTeamHandler());
 
-            CustomCard.BuildCard<AmmoSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<BlockCooldownSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<DamageSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<HealthSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<BlockSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<RegenerationSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<BounceSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<JumpSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<MoveSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<ProjectileSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<ProjectileSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<ProjectileSimSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<SpreadSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<KnockbackSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<ReloadSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<AttackSpeedSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<DoTSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<RespawnsSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<SizeSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<SlowSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<PercentDamageSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<BulletGravSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<BulletSizeSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<BurstSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
-            CustomCard.BuildCard<LifestealSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<AmmoSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<BlockCooldownSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<DamageSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<HealthSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<BlockSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<RegenerationSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<BounceSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<JumpSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<MoveSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c)           );
+            CustomCard.BuildCard<ProjectileSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<ProjectileSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<ProjectileSimSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<SpreadSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<KnockbackSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<ReloadSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<AttackSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<DoTSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<RespawnsSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<SizeSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<SlowSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<PercentDamageSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<BulletGravSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<BulletSizeSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<BurstSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<LifestealSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<GiveSkillPointCard>(c => GiveSkillPointCard = c);
 
             GameModeManager.AddHook(GameModeHooks.HookPickEnd, _ => SkillPointShop.WaitUntillShopDone());
             GameModeManager.AddHook(GameModeHooks.HookGameStart, GameStart);
+
+            GameModeManager.AddHook(GameModeHooks.HookGameStart, RemoveSkillPointCard);
+
         }
 
         internal IEnumerator GameStart(IGameModeHandler gm)
         {
             yield return SkillPointShop.SkillUp();
+            yield break;
+        }
+        
+        internal IEnumerator RemoveSkillPointCard(IGameModeHandler gm)
+        {
+            if (!gm.Name.Contains("Skill_Point"))
+            {
+                CardManager.DisableCard(GiveSkillPointCard);
+            } else
+            {
+                CardManager.EnableCard(GiveSkillPointCard);
+            }
             yield break;
         }
     }

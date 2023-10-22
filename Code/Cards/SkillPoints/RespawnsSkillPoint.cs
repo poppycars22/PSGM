@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PoppyScyyeGameModes.Cards
+﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class RegenerationSkillPoint : SkillPointCard
+    internal class RespawnsSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.regen = 1;
+            statModifiers.respawns = 1;
             Cards.Add(this);
         }
 
@@ -18,8 +14,16 @@ namespace PoppyScyyeGameModes.Cards
             {
                 amount = "+1",
                 positive = true,
-                stat = "Regeneration"
+                stat = "Respawn"
             };
+        }
+        public override int GetCost()
+        {
+            return 10;
+        }
+        public override int GetLimit()
+        {
+            return 2;
         }
         public override string GetCategory()
         {

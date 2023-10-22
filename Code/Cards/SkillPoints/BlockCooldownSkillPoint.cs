@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PoppyScyyeGameModes.Cards
+﻿namespace PoppyScyyeGameModes.Cards
 {
     internal class BlockCooldownSkillPoint : SkillPointCard
     {

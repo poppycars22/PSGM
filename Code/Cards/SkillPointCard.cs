@@ -20,7 +20,6 @@ namespace PoppyScyyeGameModes.Cards
         {
         }
 
-
         protected override GameObject GetCardArt()
         {
             return null;
@@ -32,15 +31,12 @@ namespace PoppyScyyeGameModes.Cards
 
         public override string GetModName()
         {
-            return "Skill Points";
+            return GetCost() + " point" + (GetCost()>1?"s":"");
         }
 
         protected override string GetDescription()
         {
-            if (GetLimit() == 0)
-                return "";
-            else
-                return "Limit of " + GetLimit();
+            return GetLimit()==0?"":"Limit of "+GetLimit();
         }
 
         protected override CardInfo.Rarity GetRarity()
@@ -55,10 +51,7 @@ namespace PoppyScyyeGameModes.Cards
 
         protected override CardInfoStat[] GetStats()
         {
-            return new[]
-            {
-                GetStat()
-            };
+            return new[]{GetStat()};
         }
 
         protected override string GetTitle()

@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace PoppyScyyeGameModes.Cards
+﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class RespawnsSkillPoint : SkillPointCard
+    internal class DoTSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.respawns = 1;
+            statModifiers.secondsToTakeDamageOver = 1;
             Cards.Add(this);
         }
 
@@ -14,18 +12,10 @@ namespace PoppyScyyeGameModes.Cards
         {
             return new CardInfoStat()
             {
-                amount = "+1",
+                amount = "+1 second",
                 positive = true,
-                stat = "Respawn"
+                stat = "DoT"
             };
-        }
-        public override int GetCost()
-        {
-            return 10;
-        }
-        public override int GetLimit()
-        {
-            return 2;
         }
         public override string GetCategory()
         {

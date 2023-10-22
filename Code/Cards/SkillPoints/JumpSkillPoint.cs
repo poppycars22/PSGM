@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace PoppyScyyeGameModes.Cards
-{
-    internal class SizeSkillPoint : SkillPointCard
+﻿namespace PoppyScyyeGameModes.Cards
+    internal class JumpSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.sizeMultiplier = 0.9f;
+            statModifiers.numberOfJumps = 1;
             Cards.Add(this);
         }
 
@@ -14,18 +11,14 @@ namespace PoppyScyyeGameModes.Cards
         {
             return new CardInfoStat()
             {
-                amount = "-10%",
-                positive = true,
-                stat = "Size"
+                amount = "+1",
+                stat = "Jump",
+                positive = true
             };
         }
         public override string GetCategory()
         {
             return "Player";
-        }
-        public override int GetLimit()
-        {
-            return 7;
         }
     }
 }

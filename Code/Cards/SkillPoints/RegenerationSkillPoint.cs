@@ -1,10 +1,10 @@
 ﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class AmmoSkillPoint : SkillPointCard
+    internal class RegenerationSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            gun.ammo = 5;
+            statModifiers.regen = 1;
             Cards.Add(this);
         }
 
@@ -12,10 +12,14 @@
         {
             return new CardInfoStat()
             {
-                amount = "+5",
-                stat = "Ammo",
-                positive = true
+                amount = "+1",
+                positive = true,
+                stat = "Regeneration"
             };
+        }
+        public override string GetCategory()
+        {
+            return "Player";
         }
     }
 }

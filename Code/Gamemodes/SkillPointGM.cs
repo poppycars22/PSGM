@@ -1,17 +1,10 @@
-﻿using ItemShops.Extensions;
-using ItemShops.Utils;
-using Photon.Pun;
-using Photon.Realtime;
-using PoppyScyyeGameModes.Cards;
+﻿using Photon.Pun;
 using PoppyScyyeGameModes.Monos;
 using RWF.GameModes;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
 using UnboundLib;
 using UnboundLib.Networking;
-using UnityEngine;
 
 namespace PoppyScyyeGameModes.Gamemodes
 {
@@ -25,21 +18,21 @@ namespace PoppyScyyeGameModes.Gamemodes
         {
             foreach (Player player in PlayerManager.instance.players)
             {
-                player.gameObject.GetOrAddComponent<SkillPointMono>();
+                gameObject.GetOrAddComponent<SkillPointMono>();
             }
             yield return base.DoStartGame();
         }
         public override void PlayerJoined(Player player)
         {
-            this.Kills[player.playerID] = 0;
-            this.lastPlayerDamage[player.playerID] = player.playerID;
+            Kills[player.playerID] = 0;
+            lastPlayerDamage[player.playerID] = player.playerID;
             base.PlayerJoined(player);
         }
         public override IEnumerator DoPointStart()
         {
             foreach (Player player in PlayerManager.instance.players)
             {
-                this.lastPlayerDamage[player.playerID] = player.playerID;
+                lastPlayerDamage[player.playerID] = player.playerID;
             }
             yield return base.DoPointStart();
         }
@@ -47,18 +40,18 @@ namespace PoppyScyyeGameModes.Gamemodes
         {
             foreach (Player player in PlayerManager.instance.players)
             {
-                this.lastPlayerDamage[player.playerID] = player.playerID;
+                lastPlayerDamage[player.playerID] = player.playerID;
             }
             yield return base.DoRoundStart();
         }
         protected override void Awake()
         {
-            SkillPointGM.instance = this;
+            instance = this;
             base.Awake();
         }
         public void Start()
         {
-            this.StartCoroutine(this.Init());
+            StartCoroutine(Init());
         }
         public override void PlayerDied(Player killedPlayer, int teamsAlive)
         {
@@ -81,7 +74,7 @@ namespace PoppyScyyeGameModes.Gamemodes
                 TimeHandler.instance.DoSlowDown();
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    NetworkingManager.RPC(typeof(RWFGameMode), "RPCA_NextRound", new int[1] { PlayerManager.instance.GetLastPlayerAlive().teamID }, teamPoints, teamRounds);
+                    NetworkingManager.RPC(typeof(RWFGameMode), nameof(RPCA_NextRound), new int[1] { PlayerManager.instance.GetLastPlayerAlive().teamID }, teamPoints, teamRounds);
                 }
             }
         }

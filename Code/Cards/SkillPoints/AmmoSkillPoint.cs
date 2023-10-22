@@ -1,12 +1,9 @@
-﻿using System;
-
-namespace PoppyScyyeGameModes.Cards
-{
-    internal class DamageSkillPoint : SkillPointCard
+﻿namespace PoppyScyyeGameModes.Cards { 
+    internal class AmmoSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            gun.damage = 1.15f;
+            gun.ammo = 5;
             Cards.Add(this);
         }
 
@@ -14,9 +11,9 @@ namespace PoppyScyyeGameModes.Cards
         {
             return new CardInfoStat()
             {
-                amount = "+15%",
-                positive = true,
-                stat = "Damage"
+                amount = "+5",
+                stat = "Ammo",
+                positive = true
             };
         }
     }

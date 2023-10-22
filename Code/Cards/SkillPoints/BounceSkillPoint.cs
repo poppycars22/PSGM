@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace PoppyScyyeGameModes.Cards
+﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class HealthSkillPoint : SkillPointCard
+    internal class BounceSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.health = 1.15f;
+            gun.reflects = 2;
             Cards.Add(this);
         }
 
@@ -14,14 +12,10 @@ namespace PoppyScyyeGameModes.Cards
         {
             return new CardInfoStat()
             {
-                amount = "+15%",
+                amount = "+2",
                 positive = true,
-                stat = "Health"
+                stat = "Bounces"
             };
-        }
-        public override string GetCategory()
-        {
-            return "Player";
         }
     }
 }

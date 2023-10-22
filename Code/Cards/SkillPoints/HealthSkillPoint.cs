@@ -1,12 +1,10 @@
-﻿using System;
-
-namespace PoppyScyyeGameModes.Cards
+﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class DoTSkillPoint : SkillPointCard
+    internal class HealthSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            statModifiers.secondsToTakeDamageOver = 1;
+            statModifiers.health = 1.15f;
             Cards.Add(this);
         }
 
@@ -14,9 +12,9 @@ namespace PoppyScyyeGameModes.Cards
         {
             return new CardInfoStat()
             {
-                amount = "+1 second",
+                amount = "+15%",
                 positive = true,
-                stat = "DoT"
+                stat = "Health"
             };
         }
         public override string GetCategory()
