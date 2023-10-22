@@ -9,6 +9,10 @@
         }
         public override void OnAddCard(Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
+            if (gun.bursts <= 1)
+            {
+                gun.bursts += 1;
+            }
             if (gun.timeBetweenBullets == 0)
             {
                 gun.timeBetweenBullets = 0.1f;

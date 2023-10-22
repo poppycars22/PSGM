@@ -1,4 +1,5 @@
 ﻿namespace PoppyScyyeGameModes.Cards
+{ 
     internal class JumpSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
