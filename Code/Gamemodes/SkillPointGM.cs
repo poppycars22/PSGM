@@ -1,5 +1,7 @@
 ﻿using ItemShops.Extensions;
 using ItemShops.Utils;
+using Photon.Pun;
+using Photon.Realtime;
 using PoppyScyyeGameModes.Cards;
 using PoppyScyyeGameModes.Monos;
 using RWF.GameModes;
@@ -8,12 +10,17 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnboundLib;
+using UnboundLib.Networking;
 using UnityEngine;
 
 namespace PoppyScyyeGameModes.Gamemodes
 {
     public class SkillPointGM : RWFGameMode
     {
+        internal static SkillPointGM instance;
+        public Dictionary<int, int> Kills = new Dictionary<int, int>() { };
+        internal Dictionary<int, int> lastPlayerDamage = new Dictionary<int, int>() { };
+
         public override IEnumerator DoStartGame()
         {
             foreach (Player player in PlayerManager.instance.players)
@@ -21,6 +28,89 @@ namespace PoppyScyyeGameModes.Gamemodes
                 player.gameObject.GetOrAddComponent<SkillPointMono>();
             }
             yield return base.DoStartGame();
+        }
+        public override void PlayerJoined(Player player)
+        {
+            this.Kills[player.playerID] = 0;
+            this.lastPlayerDamage[player.playerID] = player.playerID;
+            base.PlayerJoined(player);
+        }
+        public override IEnumerator DoPointStart()
+        {
+            foreach (Player player in PlayerManager.instance.players)
+            {
+                this.lastPlayerDamage[player.playerID] = player.playerID;
+            }
+            yield return base.DoPointStart();
+        }
+        public override IEnumerator DoRoundStart()
+        {
+            foreach (Player player in PlayerManager.instance.players)
+            {
+                this.lastPlayerDamage[player.playerID] = player.playerID;
+            }
+            yield return base.DoRoundStart();
+        }
+        protected override void Awake()
+        {
+            SkillPointGM.instance = this;
+            base.Awake();
+        }
+        public void Start()
+        {
+            this.StartCoroutine(this.Init());
+        }
+        public override void PlayerDied(Player killedPlayer, int teamsAlive)
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                if (lastPlayerDamage[killedPlayer.playerID] == killedPlayer.playerID)
+                {
+                    NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), new object[] { killedPlayer.playerID, -1 });
+                }
+                else
+                {
+                    if (GetPlayerWithID(lastPlayerDamage[killedPlayer.playerID]).teamID == killedPlayer.teamID)
+                        NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), new object[] { killedPlayer.playerID, 1 });
+                    else
+                        NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), new object[] { lastPlayerDamage[killedPlayer.playerID], 1 });
+                }
+            }
+            if (teamsAlive == 1)
+            {
+                TimeHandler.instance.DoSlowDown();
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    NetworkingManager.RPC(typeof(RWFGameMode), "RPCA_NextRound", new int[1] { PlayerManager.instance.GetLastPlayerAlive().teamID }, teamPoints, teamRounds);
+                }
+            }
+        }
+        public static int GetKills(int playerId)
+        {
+            int kills;
+            instance.Kills.TryGetValue(playerId, out kills);
+            return kills;
+        }
+        [UnboundRPC]
+        public static void UpdateKills(int playerID, int kills)
+        {
+            instance.Kills[playerID] += kills;
+        }
+        [UnboundRPC]
+        public static void SetKills(int playerID, int kills)
+        {
+            instance.Kills[playerID] = kills;
+        }
+        internal static Player GetPlayerWithID(int playerID)
+        {
+            for (int i = 0; i < PlayerManager.instance.players.Count; i++)
+            {
+                if (PlayerManager.instance.players[i].playerID == playerID)
+                {
+                    return PlayerManager.instance.players[i];
+                }
+            }
+            return null;
         }
     }
 

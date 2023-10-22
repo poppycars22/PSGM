@@ -8,16 +8,28 @@ using System;
 using System.Linq;
 using PoppyScyyeGameModes.Extentions;
 using ItemShops.Extensions;
+using PoppyScyyeGameModes.Gamemodes;
+using Photon.Realtime;
+using UnboundLib;
 
 namespace PoppyScyyeGameModes.Monos
 {
     public class SkillPointMono : MonoBehaviour
     {
-
         public void Awake()
         {
             Player player = this.GetComponentInParent<Player>();
             player.AddSkillPoints(10);
+        }
+        public void Update()
+        {
+            Player player = this.GetComponentInParent<Player>();
+            if (SkillPointGM.GetKills(player.playerID) >= 1)
+            {
+                UnityEngine.Debug.Log("thing");
+                player.AddSkillPoints(1);
+                NetworkingManager.RPC(typeof(SkillPointGM), nameof(SkillPointGM.SetKills), new object[] { player.playerID, 0 });
+            }
         }
     }
     public class SkillPointShop
