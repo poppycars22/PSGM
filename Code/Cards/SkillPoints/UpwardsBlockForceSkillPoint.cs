@@ -1,10 +1,10 @@
 ﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class BlockForceSkillPoint : SkillPointCard
+    internal class UpwardsBlockForceSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            block.forceToAdd = 3;
+            block.forceToAddUp = 3;
             Cards.Add(this);
         }
 
@@ -13,7 +13,7 @@
             return new CardInfoStat()
             {
                 amount = "+3",
-                stat = "Block Force",
+                stat = "Upwards Block Force",
                 positive = true
             };
         }
