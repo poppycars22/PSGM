@@ -72,6 +72,10 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<SizeSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<SlowSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
             CustomCard.BuildCard<PercentDamageSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<BulletGravSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<BulletSizeSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<BurstSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
+            CustomCard.BuildCard<LifestealSkillPoint>(c => { ModdingUtils.Utils.Cards.instance.AddHiddenCard(c); });
 
             GameModeManager.AddHook(GameModeHooks.HookPickEnd, _ => SkillPointShop.WaitUntillShopDone());
             GameModeManager.AddHook(GameModeHooks.HookGameStart, GameStart);
