@@ -1,10 +1,10 @@
 ﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class BlockForceSkillPoint : SkillPointCard
+    internal class HealOnBlockSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            block.forceToAdd = 3;
+            block.healing = 3;
             Cards.Add(this);
         }
 
@@ -13,7 +13,7 @@
             return new CardInfoStat()
             {
                 amount = "+3",
-                stat = "Block Force",
+                stat = "Healing on Block",
                 positive = true
             };
         }

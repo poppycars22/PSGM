@@ -59,7 +59,7 @@ namespace PoppyScyyeGameModes.Gamemodes
             {
                 if (lastPlayerDamage[killedPlayer.playerID] == killedPlayer.playerID)
                 {
-                    NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), new object[] { killedPlayer.playerID, -1 });
+                    //NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), new object[] { killedPlayer.playerID, -1 });
                 }
                 else
                 {
