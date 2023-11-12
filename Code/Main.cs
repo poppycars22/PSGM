@@ -85,6 +85,7 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<DmgOnBounceSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<SpeedOnBounceSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<JumpHeightSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+            CustomCard.BuildCard<PlayerGravitySkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
 
             CustomCard.BuildCard<GiveSkillPointCard>(c => GiveSkillPointCard = c);
 

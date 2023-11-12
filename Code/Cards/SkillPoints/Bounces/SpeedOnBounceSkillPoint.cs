@@ -17,5 +17,9 @@
                 stat = "Bullet Speed on Bounce"
             };
         }
+        public override string GetCategory()
+        {
+            return "Bounces";
+        }
     }
 }

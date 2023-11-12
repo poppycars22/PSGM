@@ -1,10 +1,10 @@
 ﻿namespace PoppyScyyeGameModes.Cards
 {
-    internal class BounceSkillPoint : SkillPointCard
+    internal class DmgOnBounceSkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            gun.reflects = 2;
+            gun.dmgMOnBounce = 1.1f;
             Cards.Add(this);
         }
 
@@ -12,10 +12,14 @@
         {
             return new CardInfoStat()
             {
-                amount = "+2",
+                amount = "+10%",
                 positive = true,
-                stat = "Bounces"
+                stat = "Damage on Bounce"
             };
+        }
+        public override string GetCategory()
+        {
+            return "Bounces";
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace PoppyScyyeGameModes.Cards
-{
-    internal class DmgOnBounceSkillPoint : SkillPointCard
+{ 
+    internal class PlayerGravitySkillPoint : SkillPointCard
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            gun.dmgMOnBounce = 1.1f;
+            statModifiers.gravity = 0.95f;
             Cards.Add(this);
         }
 
@@ -12,10 +12,14 @@
         {
             return new CardInfoStat()
             {
-                amount = "+10%",
-                positive = true,
-                stat = "Damage on Bounce"
+                amount = "-5%",
+                stat = "Player Gravity",
+                positive = true
             };
+        }
+        public override string GetCategory()
+        {
+            return "Player";
         }
     }
 }
