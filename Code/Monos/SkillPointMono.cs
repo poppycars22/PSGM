@@ -26,7 +26,7 @@ namespace PoppyScyyeGameModes.Monos
             Player player = this.GetComponentInParent<Player>();
             if (SkillPointGM.GetKills(player.playerID) >= 3)
             {
-                UnityEngine.Debug.Log("thing");
+                //UnityEngine.Debug.Log("thing");
                 player.AddSkillPoints(1);
                 NetworkingManager.RPC(typeof(SkillPointGM), nameof(SkillPointGM.SetKills), new object[] { player.playerID, 0 });
             }
