@@ -21,7 +21,7 @@ namespace PoppyScyyeGameModes.Cards
 
         protected override string GetDescription()
         {
-            return "";
+            return "Get 2 extra skill points";
         }
 
         protected override CardInfo.Rarity GetRarity()

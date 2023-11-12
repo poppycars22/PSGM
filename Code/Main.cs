@@ -62,7 +62,7 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<RegenerationSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<BounceSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<JumpSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
-            CustomCard.BuildCard<MoveSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c)           );
+            CustomCard.BuildCard<MoveSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<ProjectileSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<ProjectileSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<ProjectileSimSpeedSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
@@ -82,6 +82,7 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<BlockForceSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<UpwardsBlockForceSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<HealOnBlockSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
+
             CustomCard.BuildCard<GiveSkillPointCard>(c => GiveSkillPointCard = c);
 
             GameModeManager.AddHook(GameModeHooks.HookPickEnd, _ => SkillPointShop.WaitUntillShopDone());
