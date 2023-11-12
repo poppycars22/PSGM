@@ -18,7 +18,7 @@ namespace PoppyScyyeGameModes.Gamemodes
         {
             foreach (Player player in PlayerManager.instance.players)
             {
-                gameObject.GetOrAddComponent<SkillPointMono>();
+                player.gameObject.GetOrAddComponent<SkillPointMono>();
             }
             yield return base.DoStartGame();
         }

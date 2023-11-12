@@ -11,6 +11,8 @@ using ItemShops.Extensions;
 using PoppyScyyeGameModes.Gamemodes;
 using Photon.Realtime;
 using UnboundLib;
+using Photon.Pun.Simple;
+using Photon.Pun;
 
 namespace PoppyScyyeGameModes.Monos
 {
@@ -24,9 +26,8 @@ namespace PoppyScyyeGameModes.Monos
         public void Update()
         {
             Player player = this.GetComponentInParent<Player>();
-            if (SkillPointGM.GetKills(player.playerID) >= 3)
+            if (SkillPointGM.GetKills(player.playerID) >= 3 && PhotonNetwork.IsMasterClient)
             {
-                //UnityEngine.Debug.Log("thing");
                 player.AddSkillPoints(1);
                 NetworkingManager.RPC(typeof(SkillPointGM), nameof(SkillPointGM.SetKills), new object[] { player.playerID, 0 });
             }
