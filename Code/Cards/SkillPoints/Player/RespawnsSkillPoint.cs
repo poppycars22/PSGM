@@ -19,7 +19,7 @@
         }
         public override int GetCost()
         {
-            return 10;
+            return 15;
         }
         public override int GetLimit()
         {

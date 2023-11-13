@@ -21,7 +21,7 @@ namespace PoppyScyyeGameModes.Monos
         public void Awake()
         {
             Player player = this.GetComponentInParent<Player>();
-            player.AddSkillPoints(6);
+            player.AddSkillPoints(10);
         }
         public void Update()
         {
