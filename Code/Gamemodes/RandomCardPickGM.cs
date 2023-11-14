@@ -1,34 +1,130 @@
 ﻿using HarmonyLib;
+using RWF;
 using RWF.GameModes;
+using RWF.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnboundLib;
 using UnboundLib.GameModes;
 using UnityEngine;
+using static CardInfo;
 
 namespace PoppyScyyeGameModes.Gamemodes
 {
     public class RandomCardPickGM : RWFGameMode
     {
         static bool inPickPhase = false;
+        private bool anyCondition(CardInfo card, Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
+        {
+            return true;
 
+        }
         public override IEnumerator DoStartGame()
         {
-            GameModeManager.AddOnceHook(GameModeHooks.HookPickStart, TogglePhase );
-            GameModeManager.AddHook(GameModeHooks.HookPickEnd, TogglePhase);
+            CardBarHandler.instance.Rebuild();
+            UIHandler.instance.InvokeMethod("SetNumberOfRounds", (int)GameModeManager.CurrentHandler.Settings["roundsToWinGame"]);
+            ArtHandler.instance.NextArt();
+            yield return GameModeManager.TriggerHook("GameStart");
+            GameManager.instance.battleOngoing = false;
+            UIHandler.instance.ShowJoinGameText("LETS GOO!", PlayerSkinBank.GetPlayerSkinColors(1).winText);
+            yield return new WaitForSecondsRealtime(0.25f);
+            UIHandler.instance.HideJoinGameText();
+            PlayerSpotlight.CancelFade(disable_shadow: true);
+            PlayerManager.instance.SetPlayersSimulated(simulated: false);
+            PlayerManager.instance.InvokeMethod("SetPlayersVisible", false);
+            MapManager.instance.LoadNextLevel();
+            TimeHandler.instance.DoSpeedUp();
+            yield return new WaitForSecondsRealtime(1f);
+            yield return GameModeManager.TriggerHook("PickStart");
+            List<Player> pickOrder = PlayerManager.instance.GetPickOrder();
+            foreach (Player player in pickOrder)
+            {
+                yield return WaitForSyncUp();
+                yield return GameModeManager.TriggerHook("PlayerPickStart");
+                Gun gun = player.data.weaponHandler.gun;
+                GunAmmo gunAmmo = GetComponentInParent<GunAmmo>();
+                CharacterData data = player.data;
+                HealthHandler health = player.data.healthHandler;
+                Gravity gravity = GetComponentInParent<Gravity>();
+                Block block = GetComponentInParent<Block>();
+                CharacterStatModifiers characterStats = GetComponentInParent<CharacterStatModifiers>();
+                ModdingUtils.Utils.Cards.instance.AddCardToPlayer(player, ModdingUtils.Utils.Cards.instance.GetRandomCardWithCondition(player, gun, gunAmmo, data, health, gravity, block, characterStats, anyCondition), false, "", 2f, 2f, true);
+                yield return GameModeManager.TriggerHook("PlayerPickEnd");
+                yield return new WaitForSecondsRealtime(0.1f);
+            }
 
-            Main.instance.StartCoroutine(StartPickTimer(CardChoice.instance));
-
-            yield return base.DoStartGame();
+            yield return WaitForSyncUp();
+            CardChoiceVisuals.instance.Hide();
+            yield return GameModeManager.TriggerHook("PickEnd");
+            PlayerSpotlight.FadeIn();
+            MapManager.instance.CallInNewMapAndMovePlayers(MapManager.instance.currentLevelID);
+            TimeHandler.instance.DoSpeedUp();
+            TimeHandler.instance.StartGame();
+            GameManager.instance.battleOngoing = true;
+            UIHandler.instance.ShowRoundCounterSmall(teamPoints, teamRounds);
+            PlayerManager.instance.InvokeMethod("SetPlayersVisible", true);
+            StartCoroutine(DoRoundStart());
         }
 
-        private IEnumerator TogglePhase(IGameModeHandler handler)
+        /*private IEnumerator TogglePhase(IGameModeHandler handler)
         {
             inPickPhase = !inPickPhase;
             yield break;
+        }*/
+        public override IEnumerator RoundTransition(int[] winningTeamIDs)
+        {
+            yield return GameModeManager.TriggerHook("PointEnd");
+            yield return GameModeManager.TriggerHook("RoundEnd");
+            if (GameModeManager.CurrentHandler.GetGameWinners().Any())
+            {
+                GameOver(winningTeamIDs);
+                yield break;
+            }
+
+            StartCoroutine(PointVisualizer.instance.DoWinSequence(teamPoints, teamRounds, winningTeamIDs));
+            yield return new WaitForSecondsRealtime(1f);
+            MapManager.instance.LoadNextLevel();
+            yield return new WaitForSecondsRealtime(1.3f);
+            PlayerManager.instance.SetPlayersSimulated(simulated: false);
+            TimeHandler.instance.DoSpeedUp();
+            yield return GameModeManager.TriggerHook("PickStart");
+            PlayerManager.instance.InvokeMethod("SetPlayersVisible", false);
+            List<Player> pickOrder = PlayerManager.instance.GetPickOrder(winningTeamIDs);
+            foreach (Player player in pickOrder)
+            {
+                if (!Enumerable.Contains(winningTeamIDs, player.teamID))
+                {
+                    yield return WaitForSyncUp();
+                    yield return GameModeManager.TriggerHook("PlayerPickStart");
+                    Gun gun = player.data.weaponHandler.gun;
+                    GunAmmo gunAmmo = GetComponentInParent<GunAmmo>();
+                    CharacterData data = player.data;
+                    HealthHandler health = player.data.healthHandler;
+                    Gravity gravity = GetComponentInParent<Gravity>();
+                    Block block = GetComponentInParent<Block>();
+                    CharacterStatModifiers characterStats = GetComponentInParent<CharacterStatModifiers>();
+                    ModdingUtils.Utils.Cards.instance.AddCardToPlayer(player, ModdingUtils.Utils.Cards.instance.GetRandomCardWithCondition(player, gun, gunAmmo, data, health, gravity, block, characterStats, anyCondition), false, "", 2f, 2f, true);
+                    yield return GameModeManager.TriggerHook("PlayerPickEnd");
+                    yield return new WaitForSecondsRealtime(0.1f);
+                }
+            }
+
+            PlayerManager.instance.InvokeMethod("SetPlayersVisible", true);
+            yield return GameModeManager.TriggerHook("PickEnd");
+            yield return StartCoroutine(WaitForSyncUp());
+            PlayerSpotlight.FadeIn();
+            TimeHandler.instance.DoSlowDown();
+            MapManager.instance.CallInNewMapAndMovePlayers(MapManager.instance.currentLevelID);
+            PlayerManager.instance.RevivePlayers();
+            yield return new WaitForSecondsRealtime(0.3f);
+            TimeHandler.instance.DoSpeedUp();
+            GameManager.instance.battleOngoing = true;
+            isTransitioning = false;
+            UIHandler.instance.ShowRoundCounterSmall(teamPoints, teamRounds);
+            StartCoroutine(DoRoundStart());
         }
 
-        
 
         internal static IEnumerator StartPickTimer(CardChoice instance)
         {
