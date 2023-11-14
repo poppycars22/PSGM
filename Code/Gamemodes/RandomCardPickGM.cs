@@ -14,7 +14,6 @@ namespace PoppyScyyeGameModes.Gamemodes
 {
     public class RandomCardPickGM : RWFGameMode
     {
-        static bool inPickPhase = false;
         private bool anyCondition(CardInfo card, Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
             return true;
@@ -67,11 +66,6 @@ namespace PoppyScyyeGameModes.Gamemodes
             StartCoroutine(DoRoundStart());
         }
 
-        /*private IEnumerator TogglePhase(IGameModeHandler handler)
-        {
-            inPickPhase = !inPickPhase;
-            yield break;
-        }*/
         public override IEnumerator RoundTransition(int[] winningTeamIDs)
         {
             yield return GameModeManager.TriggerHook("PointEnd");
@@ -126,21 +120,6 @@ namespace PoppyScyyeGameModes.Gamemodes
         }
 
 
-        internal static IEnumerator StartPickTimer(CardChoice instance)
-        {
-            yield return new WaitWhile(() => !inPickPhase);
-            
-            yield return new WaitForSeconds(DrawNCards.DrawNCards.NumDraws * 0.4f);
-
-            var traverse = Traverse.Create(instance);
-
-            var spawnedCards = (List<GameObject>)traverse.Field("spawnedCards").GetValue();
-            int selectedCard = (int)instance.GetFieldValue("currentlySelectedCard");
-            instance.Pick(spawnedCards[selectedCard]);
-            
-
-            traverse.Field("pickrID").SetValue(-1);
-        }
     }
 
     public class RandomCardPickHandler : RWFGameModeHandler<RandomCardPickGM>
