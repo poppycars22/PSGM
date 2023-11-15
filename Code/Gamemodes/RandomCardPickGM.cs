@@ -28,7 +28,7 @@ namespace PoppyScyyeGameModes.Gamemodes
                 int picksMaster = PickNCards.PickNCards.PicksConfig.Value;
                 picks = picksMaster;
             }
-            UnityEngine.Debug.Log(picks);
+            //UnityEngine.Debug.Log(picks);
             CardBarHandler.instance.Rebuild();
             UIHandler.instance.InvokeMethod("SetNumberOfRounds", (int)GameModeManager.CurrentHandler.Settings["roundsToWinGame"]);
             ArtHandler.instance.NextArt();
