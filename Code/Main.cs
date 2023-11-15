@@ -44,7 +44,7 @@ namespace PoppyScyyeGameModes
             harmony.PatchAll();
         }
 
-        internal CardInfo GiveSkillPointCard;
+       // internal CardInfo GiveSkillPointCard;
 
         void Start()
         {
@@ -87,12 +87,12 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<JumpHeightSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<PlayerGravitySkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
 
-            CustomCard.BuildCard<GiveSkillPointCard>(c => GiveSkillPointCard = c);
+           // CustomCard.BuildCard<GiveSkillPointCard>(c => GiveSkillPointCard = c);
 
             GameModeManager.AddHook(GameModeHooks.HookPickEnd, _ => SkillPointShop.WaitUntillShopDone());
             GameModeManager.AddHook(GameModeHooks.HookGameStart, GameStart);
 
-            GameModeManager.AddHook(GameModeHooks.HookGameStart, RemoveSkillPointCard);
+           // GameModeManager.AddHook(GameModeHooks.HookGameStart, RemoveSkillPointCard);
 
         }
 
@@ -102,7 +102,7 @@ namespace PoppyScyyeGameModes
             yield break;
         }
         
-        internal IEnumerator RemoveSkillPointCard(IGameModeHandler gm)
+      /*  internal IEnumerator RemoveSkillPointCard(IGameModeHandler gm)
         {
             if (!gm.Name.Contains("Skill_Point"))
             {
@@ -112,6 +112,6 @@ namespace PoppyScyyeGameModes
                 CardManager.EnableCard(GiveSkillPointCard);
             }
             yield break;
-        }
+        }*/
     }
 }
