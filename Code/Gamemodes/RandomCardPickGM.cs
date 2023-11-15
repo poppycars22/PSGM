@@ -8,12 +8,14 @@ using System.Linq;
 using UnboundLib;
 using UnboundLib.GameModes;
 using UnityEngine;
-using static CardInfo;
+using PickNCards;
+using Photon.Pun;
 
 namespace PoppyScyyeGameModes.Gamemodes
 {
     public class RandomCardPickGM : RWFGameMode
     {
+        public int picks;
         private bool anyCondition(CardInfo card, Player player, Gun gun, GunAmmo gunAmmo, CharacterData data, HealthHandler health, Gravity gravity, Block block, CharacterStatModifiers characterStats)
         {
             return true;
@@ -21,6 +23,12 @@ namespace PoppyScyyeGameModes.Gamemodes
         }
         public override IEnumerator DoStartGame()
         {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                int picksMaster = PickNCards.PickNCards.PicksConfig.Value;
+                picks = picksMaster;
+            }
+            UnityEngine.Debug.Log(picks);
             CardBarHandler.instance.Rebuild();
             UIHandler.instance.InvokeMethod("SetNumberOfRounds", (int)GameModeManager.CurrentHandler.Settings["roundsToWinGame"]);
             ArtHandler.instance.NextArt();
@@ -39,18 +47,21 @@ namespace PoppyScyyeGameModes.Gamemodes
             List<Player> pickOrder = PlayerManager.instance.GetPickOrder();
             foreach (Player player in pickOrder)
             {
-                yield return WaitForSyncUp();
-                yield return GameModeManager.TriggerHook("PlayerPickStart");
-                Gun gun = player.data.weaponHandler.gun;
-                GunAmmo gunAmmo = GetComponentInParent<GunAmmo>();
-                CharacterData data = player.data;
-                HealthHandler health = player.data.healthHandler;
-                Gravity gravity = GetComponentInParent<Gravity>();
-                Block block = GetComponentInParent<Block>();
-                CharacterStatModifiers characterStats = GetComponentInParent<CharacterStatModifiers>();
-                ModdingUtils.Utils.Cards.instance.AddCardToPlayer(player, ModdingUtils.Utils.Cards.instance.GetRandomCardWithCondition(player, gun, gunAmmo, data, health, gravity, block, characterStats, anyCondition), false, "", 2f, 2f, true);
-                yield return GameModeManager.TriggerHook("PlayerPickEnd");
-                yield return new WaitForSecondsRealtime(0.1f);
+                for (int i = 0; i < picks; i++)
+                {
+                    yield return WaitForSyncUp();
+                    yield return GameModeManager.TriggerHook("PlayerPickStart");
+                    Gun gun = player.data.weaponHandler.gun;
+                    GunAmmo gunAmmo = GetComponentInParent<GunAmmo>();
+                    CharacterData data = player.data;
+                    HealthHandler health = player.data.healthHandler;
+                    Gravity gravity = GetComponentInParent<Gravity>();
+                    Block block = GetComponentInParent<Block>();
+                    CharacterStatModifiers characterStats = GetComponentInParent<CharacterStatModifiers>();
+                    ModdingUtils.Utils.Cards.instance.AddCardToPlayer(player, ModdingUtils.Utils.Cards.instance.GetRandomCardWithCondition(player, gun, gunAmmo, data, health, gravity, block, characterStats, anyCondition), false, "", 2f, 2f, true);
+                    yield return GameModeManager.TriggerHook("PlayerPickEnd");
+                    yield return new WaitForSecondsRealtime(0.1f);
+                }
             }
 
             yield return WaitForSyncUp();
@@ -89,18 +100,21 @@ namespace PoppyScyyeGameModes.Gamemodes
             {
                 if (!Enumerable.Contains(winningTeamIDs, player.teamID))
                 {
-                    yield return WaitForSyncUp();
-                    yield return GameModeManager.TriggerHook("PlayerPickStart");
-                    Gun gun = player.data.weaponHandler.gun;
-                    GunAmmo gunAmmo = GetComponentInParent<GunAmmo>();
-                    CharacterData data = player.data;
-                    HealthHandler health = player.data.healthHandler;
-                    Gravity gravity = GetComponentInParent<Gravity>();
-                    Block block = GetComponentInParent<Block>();
-                    CharacterStatModifiers characterStats = GetComponentInParent<CharacterStatModifiers>();
-                    ModdingUtils.Utils.Cards.instance.AddCardToPlayer(player, ModdingUtils.Utils.Cards.instance.GetRandomCardWithCondition(player, gun, gunAmmo, data, health, gravity, block, characterStats, anyCondition), false, "", 2f, 2f, true);
-                    yield return GameModeManager.TriggerHook("PlayerPickEnd");
-                    yield return new WaitForSecondsRealtime(0.1f);
+                    for (int i = 0; i < picks; i++)
+                    {
+                        yield return WaitForSyncUp();
+                        yield return GameModeManager.TriggerHook("PlayerPickStart");
+                        Gun gun = player.data.weaponHandler.gun;
+                        GunAmmo gunAmmo = GetComponentInParent<GunAmmo>();
+                        CharacterData data = player.data;
+                        HealthHandler health = player.data.healthHandler;
+                        Gravity gravity = GetComponentInParent<Gravity>();
+                        Block block = GetComponentInParent<Block>();
+                        CharacterStatModifiers characterStats = GetComponentInParent<CharacterStatModifiers>();
+                        ModdingUtils.Utils.Cards.instance.AddCardToPlayer(player, ModdingUtils.Utils.Cards.instance.GetRandomCardWithCondition(player, gun, gunAmmo, data, health, gravity, block, characterStats, anyCondition), false, "", 2f, 2f, true);
+                        yield return GameModeManager.TriggerHook("PlayerPickEnd");
+                        yield return new WaitForSecondsRealtime(0.1f);
+                    }
                 }
             }
 
