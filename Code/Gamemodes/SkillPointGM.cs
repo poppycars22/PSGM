@@ -129,7 +129,7 @@ namespace PoppyScyyeGameModes.Gamemodes
             maxPlayers: null,
             maxTeams: null,
             maxClients: null,
-            description: "Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 3 kills or from the Skill point card.")
+            description: "Get " + Main.StartingPointsConfig.Value + " Skill Points at the start of the game to spend on different stats, get additional skill points every " + Main.KillsConfig.Value + " kills.")
         {
 
         }
@@ -151,7 +151,7 @@ namespace PoppyScyyeGameModes.Gamemodes
             maxPlayers: null,
             maxTeams: null,
             maxClients: null,
-            description: "Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 5 kills or from the Skill point card.")
+            description: "Get 10 Skill Points at the start of the game to spend on different stats, get additional skill points every 3 kills.")
         {
 
         }

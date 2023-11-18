@@ -8,6 +8,13 @@ using System.Collections;
 using UnboundLib.GameModes;
 using PoppyScyyeGameModes.Cards;
 using UnboundLib.Utils;
+using TMPro;
+using UnboundLib.Utils.UI;
+using UnityEngine;
+using Photon.Pun;
+using UnboundLib.Networking;
+using BepInEx.Configuration;
+using System;
 
 namespace PoppyScyyeGameModes
 {
@@ -31,8 +38,11 @@ namespace PoppyScyyeGameModes
         /*
          * TODO: Make the gamemode work properly :"D
          */
-
+        public static ConfigEntry<int> KillsConfig;
+        public static ConfigEntry<int> StartingPointsConfig;
         public static Main instance { get; private set; }
+
+       
 
         void Awake()
         {
@@ -40,6 +50,9 @@ namespace PoppyScyyeGameModes
             Unbound.RegisterCredits("Poppys And Scyyes Gamemodes", new string[] { "Poppycars", "Scyye" }, new string[] { "GitHub", "Poppycars", "Scyye" },
                 new string[] {"https://github.com/poppycars22/PSGM", "https://github.com/poppycars22", "https://github.com/Scyye"});
 
+
+            KillsConfig = base.Config.Bind<int>(ModId, "KillsConfig", 3, "The amount of kills needed to get a skill point");
+            StartingPointsConfig = base.Config.Bind<int>(ModId, "StartingPointsConfig", 10, "The amount of skill points each player starts with");
             var harmony = new Harmony(ModId);
             harmony.PatchAll();
         }
@@ -87,7 +100,11 @@ namespace PoppyScyyeGameModes
             CustomCard.BuildCard<JumpHeightSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<PlayerGravitySkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
 
-           // CustomCard.BuildCard<GiveSkillPointCard>(c => GiveSkillPointCard = c);
+            // CustomCard.BuildCard<GiveSkillPointCard>(c => GiveSkillPointCard = c);
+            Unbound.RegisterMenu(ModName, () => { }, this.NewGUI, null, false);
+            //Unbound.RegisterMenu(ModName, delegate () { }, new Action<GameObject>(this.NewGUI), null, false);
+            // handshake to sync settings
+            Unbound.RegisterHandshake(Main.ModId, this.OnHandShakeCompleted);
 
             GameModeManager.AddHook(GameModeHooks.HookPickEnd, _ => SkillPointShop.WaitUntillShopDone());
             GameModeManager.AddHook(GameModeHooks.HookGameStart, GameStart);
@@ -95,7 +112,32 @@ namespace PoppyScyyeGameModes
            // GameModeManager.AddHook(GameModeHooks.HookGameStart, RemoveSkillPointCard);
 
         }
+        private void OnHandShakeCompleted()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                NetworkingManager.RPC_Others(typeof(Main), nameof(SyncSettings), new object[] { Main.KillsConfig.Value, Main.StartingPointsConfig.Value });
+            }
+        }
+        [UnboundRPC]
+        private static void SyncSettings(int host_kills, int host_StartingPoints)
+        {
+            Main.KillsConfig.Value = host_kills;
+            Main.StartingPointsConfig.Value = host_StartingPoints;
+        }
+        private void NewGUI(GameObject menu)
+        {
+            MenuHandler.CreateText("Skill Point Options", menu, out _, 60);
+            MenuHandler.CreateText(" ", menu, out _, 30);
 
+            MenuHandler.CreateSlider("Number of kills for a skill point", menu, 30, 1f, 100f, KillsConfig.Value, value => KillsConfig.Value = (int)value, out UnityEngine.UI.Slider _, true);
+            MenuHandler.CreateText(" ", menu, out _, 30);
+            
+            MenuHandler.CreateSlider("Number of Skill Points to start with", menu, 30, 1f, 50f, StartingPointsConfig.Value, value => StartingPointsConfig.Value = (int)value, out UnityEngine.UI.Slider _, true);
+            MenuHandler.CreateText(" ", menu, out _, 30);
+        }
+        
+        
         internal IEnumerator GameStart(IGameModeHandler gm)
         {
             yield return SkillPointShop.SkillUp();

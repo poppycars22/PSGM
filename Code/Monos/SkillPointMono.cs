@@ -21,12 +21,12 @@ namespace PoppyScyyeGameModes.Monos
         public void Awake()
         {
             Player player = this.GetComponentInParent<Player>();
-            player.AddSkillPoints(10);
+            player.AddSkillPoints(Main.StartingPointsConfig.Value);
         }
         public void Update()
         {
             Player player = this.GetComponentInParent<Player>();
-            if (SkillPointGM.GetKills(player.playerID) >= 3 && PhotonNetwork.IsMasterClient)
+            if (SkillPointGM.GetKills(player.playerID) >= Main.KillsConfig.Value && PhotonNetwork.IsMasterClient)
             {
                 player.AddSkillPoints(1);
                 NetworkingManager.RPC(typeof(SkillPointGM), nameof(SkillPointGM.SetKills), new object[] { player.playerID, 0 });
