@@ -152,7 +152,7 @@ namespace PoppyScyyeGameModes.Gamemodes
             maxPlayers: null,
             maxTeams: null,
             maxClients: null,
-            description: "Skillfully picking? Never heard of it! Get a random card each pick phase.")
+            description: "Tired of waiting 10 years for your opponent just to pick healing field? Well in this gamemode thats no longer a issue!!! Get a random card instead of manually picking each pick phase")
         {
 
         }

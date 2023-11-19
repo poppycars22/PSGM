@@ -130,10 +130,10 @@ namespace PoppyScyyeGameModes
             MenuHandler.CreateText("Skill Point Options", menu, out _, 60);
             MenuHandler.CreateText(" ", menu, out _, 30);
 
-            MenuHandler.CreateSlider("Number of kills for a skill point", menu, 30, 1f, 100f, KillsConfig.Value, value => KillsConfig.Value = (int)value, out UnityEngine.UI.Slider _, true);
+            MenuHandler.CreateSlider("Kills required for a skill point (0=disabled)", menu, 30, 0f, 100f, KillsConfig.Value, value => KillsConfig.Value = (int)value, out UnityEngine.UI.Slider _, true);
             MenuHandler.CreateText(" ", menu, out _, 30);
             
-            MenuHandler.CreateSlider("Number of Skill Points to start with", menu, 30, 1f, 50f, StartingPointsConfig.Value, value => StartingPointsConfig.Value = (int)value, out UnityEngine.UI.Slider _, true);
+            MenuHandler.CreateSlider("Number of Skill Points to start with", menu, 30, 0f, 50f, StartingPointsConfig.Value, value => StartingPointsConfig.Value = (int)value, out UnityEngine.UI.Slider _, true);
             MenuHandler.CreateText(" ", menu, out _, 30);
         }
         
