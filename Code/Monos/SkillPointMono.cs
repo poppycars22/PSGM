@@ -25,12 +25,16 @@ namespace PoppyScyyeGameModes.Monos
         }
         public void Update()
         {
-            Player player = this.GetComponentInParent<Player>();
-            if (SkillPointGM.GetKills(player.playerID) >= Main.KillsConfig.Value && PhotonNetwork.IsMasterClient && Main.KillsConfig.Value != 0)
+            /*Player player = this.GetComponentInParent<Player>();
+            UnityEngine.Debug.Log(player.playerID + " " + SkillPointGM.GetKills(player.playerID));
+            if (SkillPointGM.GetKills(player.playerID) >= Main.KillsConfig.Value && Main.KillsConfig.Value != 0)
             {
-                player.AddSkillPoints(1);
-                NetworkingManager.RPC(typeof(SkillPointGM), nameof(SkillPointGM.SetKills), new object[] { player.playerID, 0 });
-            }
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    player.AddSkillPoints(1);
+                    NetworkingManager.RPC(typeof(SkillPointGM), nameof(SkillPointGM.SetKills), new object[] { player.playerID, 0 });
+                }
+            }*/
         }
     }
     public class SkillPointShop

@@ -4,7 +4,7 @@
     {
         public override void SetupCard(CardInfo cardInfo, Gun gun, ApplyCardStats cardStats, CharacterStatModifiers statModifiers, Block block)
         {
-            block.cdMultiplier = 0.85f;
+            block.cdMultiplier = 0.95f;
             Cards.Add(this);
         }
 
@@ -12,7 +12,7 @@
         {
             return new CardInfoStat()
             {
-                amount = "-15%",
+                amount = "-5%",
                 stat = "Block Cooldown",
                 positive = true
             };

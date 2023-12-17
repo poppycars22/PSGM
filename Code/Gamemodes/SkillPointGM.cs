@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using PoppyScyyeGameModes.Extentions;
 using PoppyScyyeGameModes.Monos;
 using RWF;
 using RWF.GameModes;
@@ -27,7 +28,22 @@ namespace PoppyScyyeGameModes.Gamemodes
             }
             yield return base.DoStartGame();
         }
-        
+        public void Update()
+        {
+            if (PhotonNetwork.IsMasterClient)
+            {
+                foreach (Player player in PlayerManager.instance.players)
+                {
+                    UnityEngine.Debug.Log(player.playerID + " " + SkillPointGM.GetKills(player.playerID));
+                    if (SkillPointGM.GetKills(player.playerID) >= Main.KillsConfig.Value && Main.KillsConfig.Value != 0)
+                    {
+                        //NetworkingManager.RPC(typeof(SkillPointGM), nameof(SkillPointGM.SetKills), player.playerID, 0);
+                        SetKills(player.playerID, 0);
+                        player.AddSkillPoints(1);
+                    }
+                }
+            }
+        }
         public override void PlayerJoined(Player player)
         {
             Kills[player.playerID] = 0;
@@ -65,14 +81,18 @@ namespace PoppyScyyeGameModes.Gamemodes
             {
                 if (lastPlayerDamage[killedPlayer.playerID] == killedPlayer.playerID)
                 {
-                    //NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), new object[] { killedPlayer.playerID, -1 });
+                    ////NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), killedPlayer.playerID, -1);
                 }
                 else
                 {
                     if (GetPlayerWithID(lastPlayerDamage[killedPlayer.playerID]).teamID == killedPlayer.teamID)
-                        NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), new object[] { killedPlayer.playerID, 1 });
+                    {
+                        //UpdateKills(lastPlayerDamage[killedPlayer.playerID], 1);
+                        //NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), killedPlayer.playerID, 1);
+                    }
                     else
-                        NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), new object[] { lastPlayerDamage[killedPlayer.playerID], 1 });
+                        UpdateKills(lastPlayerDamage[killedPlayer.playerID], 1);
+                    //NetworkingManager.RPC(typeof(SkillPointGM), nameof(UpdateKills), killedPlayer.playerID, 1);
                 }
             }
             if (teamsAlive == 1)
@@ -90,12 +110,12 @@ namespace PoppyScyyeGameModes.Gamemodes
             instance.Kills.TryGetValue(playerId, out kills);
             return kills;
         }
-        [UnboundRPC]
+        //[UnboundRPC]
         public static void UpdateKills(int playerID, int kills)
         {
             instance.Kills[playerID] += kills;
         }
-        [UnboundRPC]
+        //[UnboundRPC]
         public static void SetKills(int playerID, int kills)
         {
             instance.Kills[playerID] = kills;
