@@ -2,17 +2,53 @@
 using System;
 using HarmonyLib;
 using UnityEngine;
+using System.Collections.Generic;
+using UnboundLib.GameModes;
+using System.Collections;
+using Photon.Realtime;
 
 namespace PoppyScyyeGameModes.Gamemodes {
     internal class OponentPick : RWFGameMode {
         Harmony harmony = new Harmony("dev.scyyepoppy.rounds.gamemodes");
+        static Dictionary<Player, List<CardInfo>> addQueue = new Dictionary<Player, List<CardInfo>>();
+        static Dictionary<Player, List<CardInfo>> removeQueue = new Dictionary<Player, List<CardInfo>>();
         public override void StartGame()
         {
             base.StartGame();
             UnityEngine.Debug.Log("Game Started");
 
-            harmony.PatchAll();
-            UnityEngine.Debug.Log(harmony.GetPatchedMethods().GetEnumerator().Current + " methods patched");
+            var original = typeof(CardChoice).GetMethod("Pick");
+            var postfix = typeof(OponentPick).GetMethod("Postfix");
+
+            harmony.Patch(original, postfix: new HarmonyMethod(postfix));
+
+            GameModeManager.AddHook(GameModeHooks.HookPickEnd, PickEnd);
+        }
+
+        IEnumerator PickEnd(IGameModeHandler handler)
+        {
+            UnityEngine.Debug.Log("Pick End");
+            foreach (var entry in addQueue)
+            {
+                foreach (var card in entry.Value)
+                {
+                    UnityEngine.Debug.Log("Adding Card: " + card.cardName + " to " + entry.Key.playerID);
+                    ModdingUtils.Utils.Cards.instance.AddCardToPlayer(entry.Key, card, false, card.cardName.Substring(0, 1), 0, 0);
+                }
+            }
+            foreach (var entry in removeQueue)
+            {
+                foreach (var card in entry.Value)
+                {
+                    UnityEngine.Debug.Log("Removing card: " + card.cardName + " from " + entry.Key.playerID);
+                    ModdingUtils.Utils.Cards.instance.RemoveCardFromPlayer(entry.Key, card, editCardBar: true);
+                }
+            }
+
+            addQueue.Clear();
+            removeQueue.Clear();
+
+            yield break;
         }
 
         protected override void GameOver(int winningTeamID)
@@ -31,19 +67,39 @@ namespace PoppyScyyeGameModes.Gamemodes {
 
         [HarmonyPatch(typeof(CardChoice), nameof(CardChoice.Pick))]
         [HarmonyPostfix]
-        static void Postfix(CardChoice __instance, GameObject pickedCard)
+        public static void Postfix(CardChoice __instance, GameObject pickedCard)
         {
-            Player player = PlayerManager.instance.players.Find(p => p.playerID == __instance.pickrID);
-            CardInfo card = pickedCard.GetComponent<CardInfo>();
+            Player? player = PlayerManager.instance.players.Find(p => p.playerID == __instance.pickrID);
+            CardInfo? card = pickedCard.GetComponent<CardInfo>();
+            UnityEngine.Debug.Log(player == null);
+            UnityEngine.Debug.Log(card == null);
             UnityEngine.Debug.Log(player.playerID + " picked card: " + card.cardName);
-            
+
+            if (removeQueue.ContainsKey(player))
+            {
+                removeQueue[player].Add(card);
+            }
+            else
+            {
+                removeQueue.Add(player, new List<CardInfo> { card });
+            }
+
+            if (addQueue.ContainsKey(PlayerManager.instance.players[GetIndexNextPlayer(player)]))
+            {
+                addQueue[PlayerManager.instance.players[GetIndexNextPlayer(player)]].Add(card);
+            }
+            else
+            {
+                addQueue.Add(PlayerManager.instance.players[GetIndexNextPlayer(player)], new List<CardInfo> { card });
+            }
+            /*
             ModdingUtils.Utils.Cards.instance.RemoveCardFromPlayer
-                (player, GetIndexOfCard(player, card));
-            UnityEngine.Debug.Log("Removing card: " + card.cardName + " from " + player.playerID);
+                (player, card, editCardBar: true);
+            
 
             ModdingUtils.Utils.Cards.instance.AddCardToPlayer(PlayerManager.instance.players[GetIndexNextPlayer(player)],
                 card, false, card.cardName.Substring(0, 1), 0, 0);
-            UnityEngine.Debug.Log("Adding Card: " + card.cardName + " to " + PlayerManager.instance.players[GetIndexNextPlayer(player)].playerID);
+            */
         }
 
 
@@ -55,15 +111,20 @@ namespace PoppyScyyeGameModes.Gamemodes {
         private static int GetIndexNextPlayer(Player player)
         {
             if (PlayerManager.instance.players.IndexOf(player) + 1 == PlayerManager.instance.players.Count)
+            {
+                UnityEngine.Debug.Log("Last Player");
                 return 0;
-            else
-                return PlayerManager.instance.players.IndexOf(player) + 1;
+            }
+
+            UnityEngine.Debug.Log(PlayerManager.instance.players.IndexOf(player) + 1);
+            return PlayerManager.instance.players.IndexOf(player) + 1;
+
         }
     }
 
     internal class OponentPickHandler : RWFGameModeHandler<OponentPick> {
-        internal const string GameModeName = "Oponent Pick";
-        internal const string GameModeID = "Oponent_Pick";
+        internal const string GameModeName = "Opponent Pick";
+        internal const string GameModeID = "Opponent_Pick";
 
         // Null is default values
         public OponentPickHandler() : base(
@@ -76,15 +137,15 @@ namespace PoppyScyyeGameModes.Gamemodes {
             maxPlayers: null,
             maxTeams: null,
             maxClients: null,
-            description: "Pick your oponents card for them")
+            description: "Pick your opponents card for them")
         {
 
         }
     }
 
     internal class OponentPickTeamHandler : RWFGameModeHandler<OponentPick> {
-        internal const string GameModeName = "Team Oponent Pick";
-        internal const string GameModeID = "Team_Oponent_Pick";
+        internal const string GameModeName = "Team Opponent Pick";
+        internal const string GameModeID = "Team_Opponent_Pick";
 
         // Null is default values
         public OponentPickTeamHandler() : base(
@@ -97,7 +158,7 @@ namespace PoppyScyyeGameModes.Gamemodes {
             maxPlayers: null,
             maxTeams: null,
             maxClients: null,
-            description: "Pick your oponents card for them")
+            description: "Pick your opponents card for them")
         {
 
         }
