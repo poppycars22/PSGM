@@ -53,8 +53,6 @@ namespace PoppyScyyeGameModes
 
             KillsConfig = base.Config.Bind<int>(ModId, "KillsConfig", 3, "The amount of kills needed to get a skill point");
             StartingPointsConfig = base.Config.Bind<int>(ModId, "StartingPointsConfig", 10, "The amount of skill points each player starts with");
-            var harmony = new Harmony(ModId);
-            harmony.PatchAll();
         }
 
        // internal CardInfo GiveSkillPointCard;
@@ -66,6 +64,9 @@ namespace PoppyScyyeGameModes
 
             GameModeManager.AddHandler<RandomCardPickGM>(RandomCardPickHandler.GameModeID, new RandomCardPickHandler());
             GameModeManager.AddHandler<RandomCardPickGM>(RandomCardPickTeamHandler.GameModeID, new RandomCardPickTeamHandler());
+
+            GameModeManager.AddHandler<OponentPick>(OponentPickHandler.GameModeID, new OponentPickHandler());
+            GameModeManager.AddHandler<OponentPick>(OponentPickTeamHandler.GameModeID, new OponentPickTeamHandler());
 
             CustomCard.BuildCard<AmmoSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
             CustomCard.BuildCard<BlockCooldownSkillPoint>(c => ModdingUtils.Utils.Cards.instance.AddHiddenCard(c));
