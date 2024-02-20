@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using UnboundLib.GameModes;
 using System.Collections;
 using Photon.Realtime;
+using RWF.UI;
+using RWF;
+using UnboundLib;
 
 namespace PoppyScyyeGameModes.Gamemodes {
     internal class OponentPick : RWFGameMode {
@@ -18,14 +21,13 @@ namespace PoppyScyyeGameModes.Gamemodes {
             UnityEngine.Debug.Log("Game Started");
 
             var original = typeof(CardChoice).GetMethod("Pick");
-            var postfix = typeof(OponentPick).GetMethod("Postfix");
-
+            var postfix = typeof(OponentPick).GetMethod("Prefix");
             harmony.Patch(original, postfix: new HarmonyMethod(postfix));
 
-            GameModeManager.AddHook(GameModeHooks.HookPickEnd, PickEnd);
+           // GameModeManager.AddHook(GameModeHooks.HookPickEnd, PickEnd);
         }
 
-        IEnumerator PickEnd(IGameModeHandler handler)
+        /*IEnumerator PickEnd(IGameModeHandler handler)
         {
             UnityEngine.Debug.Log("Pick End");
             foreach (var entry in addQueue)
@@ -49,8 +51,65 @@ namespace PoppyScyyeGameModes.Gamemodes {
             removeQueue.Clear();
 
             yield break;
+        }*/
+        public override IEnumerator DoStartGame()
+        {
+            CardBarHandler.instance.Rebuild();
+            UIHandler.instance.InvokeMethod("SetNumberOfRounds", (int)GameModeManager.CurrentHandler.Settings["roundsToWinGame"]);
+            ArtHandler.instance.NextArt();
+            yield return GameModeManager.TriggerHook("GameStart");
+            GameManager.instance.battleOngoing = false;
+            UIHandler.instance.ShowJoinGameText("LETS GOO!", PlayerSkinBank.GetPlayerSkinColors(1).winText);
+            yield return new WaitForSecondsRealtime(0.25f);
+            UIHandler.instance.HideJoinGameText();
+            PlayerSpotlight.CancelFade(disable_shadow: true);
+            PlayerManager.instance.SetPlayersSimulated(simulated: false);
+            PlayerManager.instance.InvokeMethod("SetPlayersVisible", false);
+            MapManager.instance.LoadNextLevel();
+            TimeHandler.instance.DoSpeedUp();
+            yield return new WaitForSecondsRealtime(1f);
+            yield return GameModeManager.TriggerHook("PickStart");
+            List<Player> pickOrder = PlayerManager.instance.GetPickOrder();
+            foreach (Player player in pickOrder)
+            {
+                yield return WaitForSyncUp();
+                yield return GameModeManager.TriggerHook("PlayerPickStart");
+                CardChoiceVisuals.instance.Show(player.playerID, animateIn: true);
+                yield return CardChoice.instance.DoPick(1, player.playerID, PickerType.Player);
+                UnityEngine.Debug.Log("Amogus");
+                yield return GameModeManager.TriggerHook("PlayerPickEnd");
+                yield return new WaitForSecondsRealtime(0.1f);
+            }
+            foreach (var entry in addQueue)
+            {
+                foreach (var card in entry.Value)
+                {
+                    UnityEngine.Debug.Log("Adding Card: " + card.cardName + " to " + entry.Key.playerID);
+                    ModdingUtils.Utils.Cards.instance.AddCardToPlayer(entry.Key, card, false, card.cardName.Substring(0, 1), 0, 0);
+                }
+            }
+            foreach (var entry in removeQueue)
+            {
+                foreach (var card in entry.Value)
+                {
+                    UnityEngine.Debug.Log("Removing card: " + card.cardName + " from " + entry.Key.playerID);
+                    ModdingUtils.Utils.Cards.instance.RemoveCardFromPlayer(entry.Key, card, editCardBar: true);
+                }
+            }
+            addQueue.Clear();
+            removeQueue.Clear();
+            yield return WaitForSyncUp();
+            CardChoiceVisuals.instance.Hide();
+            yield return GameModeManager.TriggerHook("PickEnd");
+            PlayerSpotlight.FadeIn();
+            MapManager.instance.CallInNewMapAndMovePlayers(MapManager.instance.currentLevelID);
+            TimeHandler.instance.DoSpeedUp();
+            TimeHandler.instance.StartGame();
+            GameManager.instance.battleOngoing = true;
+            UIHandler.instance.ShowRoundCounterSmall(teamPoints, teamRounds);
+            PlayerManager.instance.InvokeMethod("SetPlayersVisible", true);
+            StartCoroutine(DoRoundStart());
         }
-
         protected override void GameOver(int winningTeamID)
         {
             base.GameOver(winningTeamID);
@@ -66,8 +125,8 @@ namespace PoppyScyyeGameModes.Gamemodes {
         }
 
         [HarmonyPatch(typeof(CardChoice), nameof(CardChoice.Pick))]
-        [HarmonyPostfix]
-        public static void Postfix(CardChoice __instance, GameObject pickedCard)
+        [HarmonyPrefix]
+        public static void Prefix(CardChoice __instance, GameObject pickedCard)
         {
             Player? player = PlayerManager.instance.players.Find(p => p.playerID == __instance.pickrID);
             CardInfo? card = pickedCard.GetComponent<CardInfo>();
