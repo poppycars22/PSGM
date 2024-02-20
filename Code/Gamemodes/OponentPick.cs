@@ -77,25 +77,26 @@ namespace PoppyScyyeGameModes.Gamemodes {
                 CardChoiceVisuals.instance.Show(player.playerID, animateIn: true);
                 yield return CardChoice.instance.DoPick(1, player.playerID, PickerType.Player);
                 UnityEngine.Debug.Log("Amogus");
+                foreach (var entry in addQueue)
+                {
+                    foreach (var card in entry.Value)
+                    {
+                        UnityEngine.Debug.Log("Adding Card: " + card.cardName + " to " + entry.Key.playerID);
+                        ModdingUtils.Utils.Cards.instance.AddCardToPlayer(entry.Key, card, false, card.cardName.Substring(0, 1), 0, 0);
+                    }
+                }
+                foreach (var entry in removeQueue)
+                {
+                    foreach (var card in entry.Value)
+                    {
+                        UnityEngine.Debug.Log("Removing card: " + card.cardName + " from " + entry.Key.playerID);
+                        ModdingUtils.Utils.Cards.instance.RemoveCardFromPlayer(entry.Key, card, editCardBar: true);
+                    }
+                }
                 yield return GameModeManager.TriggerHook("PlayerPickEnd");
                 yield return new WaitForSecondsRealtime(0.1f);
             }
-            foreach (var entry in addQueue)
-            {
-                foreach (var card in entry.Value)
-                {
-                    UnityEngine.Debug.Log("Adding Card: " + card.cardName + " to " + entry.Key.playerID);
-                    ModdingUtils.Utils.Cards.instance.AddCardToPlayer(entry.Key, card, false, card.cardName.Substring(0, 1), 0, 0);
-                }
-            }
-            foreach (var entry in removeQueue)
-            {
-                foreach (var card in entry.Value)
-                {
-                    UnityEngine.Debug.Log("Removing card: " + card.cardName + " from " + entry.Key.playerID);
-                    ModdingUtils.Utils.Cards.instance.RemoveCardFromPlayer(entry.Key, card, editCardBar: true);
-                }
-            }
+
             addQueue.Clear();
             removeQueue.Clear();
             yield return WaitForSyncUp();
