@@ -1,4 +1,5 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using PoppyScyyeGameModes.Extentions;
 using PoppyScyyeGameModes.Monos;
 using RWF;
@@ -39,6 +40,7 @@ namespace PoppyScyyeGameModes.Gamemodes
                     {
                         //NetworkingManager.RPC(typeof(SkillPointGM), nameof(SkillPointGM.SetKills), player.playerID, 0);
                         SetKills(player.playerID, 0);
+                        UnityEngine.Debug.Log(player.playerID + " " + instance.Kills[player.playerID]);
                         player.AddSkillPoints(1);
                     }
                 }
@@ -55,6 +57,7 @@ namespace PoppyScyyeGameModes.Gamemodes
             foreach (Player player in PlayerManager.instance.players)
             {
                 lastPlayerDamage[player.playerID] = player.playerID;
+                UnityEngine.Debug.Log(player.playerID + " " + instance.Kills[player.playerID]);
             }
             yield return base.DoPointStart();
         }
@@ -63,6 +66,7 @@ namespace PoppyScyyeGameModes.Gamemodes
             foreach (Player player in PlayerManager.instance.players)
             {
                 lastPlayerDamage[player.playerID] = player.playerID;
+                UnityEngine.Debug.Log(player.playerID + " " + instance.Kills[player.playerID]);
             }
             yield return base.DoRoundStart();
         }
@@ -108,17 +112,21 @@ namespace PoppyScyyeGameModes.Gamemodes
         {
             int kills;
             instance.Kills.TryGetValue(playerId, out kills);
+            UnityEngine.Debug.Log(playerId + " " + kills);
             return kills;
         }
         //[UnboundRPC]
         public static void UpdateKills(int playerID, int kills)
         {
-            instance.Kills[playerID] += kills;
+            if(PhotonNetwork.IsMasterClient)
+                instance.Kills[playerID]+=kills;
+            UnityEngine.Debug.Log(playerID + " " + kills + " " + instance.Kills[playerID]);
         }
         //[UnboundRPC]
         public static void SetKills(int playerID, int kills)
         {
             instance.Kills[playerID] = kills;
+            UnityEngine.Debug.Log(playerID + " " + kills + " " + instance.Kills[playerID]);
         }
         internal static Player GetPlayerWithID(int playerID)
         {
